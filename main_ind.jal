@@ -1,0 +1,295 @@
+-- main_ind.jal
+-- 
+-- Copyright 2023 Yosel de Jesús Balibrea Lastre <yosel.balibrea@gmail.com>
+-- 
+-- This program is free software; you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation; either version 2 of the License, or
+-- (at your option) any later version.
+-- 
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+-- 
+-- You should have received a copy of the GNU General Public License
+-- along with this program; if not, write to the Free Software
+-- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+-- MA 02110-1301, USA.
+-- 
+-- 
+
+--
+include 18f4520                     -- target PICmicro
+--
+-- This program assumes that a 20 MHz resonator or crystal
+-- is connected to pins OSC1 and OSC2.
+pragma target clock 10_000_000      -- oscillator frequency
+--
+pragma target OSC      HS                        -- crystal or resonator
+pragma target WDT      CONTROL                   -- watchdog
+pragma target XINST    DISABLED                  -- do not use extended instructionset
+pragma target DEBUG    DISABLED                  -- no debugging
+pragma target BROWNOUT DISABLED                  -- no brownout reset
+pragma target FCMEN    DISABLED                  -- no clock monitoring
+pragma target IESO     DISABLED                  -- no int/ext osc switching
+pragma target LVP      DISABLED                  -- no low voltage programming
+pragma target MCLR     EXTERNAL                  -- external reset
+--
+-- The configuration bit settings above are only a selection, sufficient
+-- for this program. Other programs may need more or different settings.
+--
+WDTCON_SWDTEN = OFF                 -- disable WDT
+OSCCON_SCS = 0                      -- select primary oscillator
+OSCTUNE_PLLEN = FALSE               -- no PLL
+--
+enable_digital_io()                 -- make all pins digital I/O
+
+include print
+include delay
+include debounce
+
+-- PWM -----------------------------------------------------------
+
+pin_P1A_direction = output
+pin_P1B_direction = output
+
+include pwm_hardware
+pwm_max_resolution(1)
+
+pwm_set_frequency(25000)
+pwm1_set_dutycycle_percent(50)
+
+pwm1_off()
+
+--~ CCP1CON_CCP1M = 0xC
+--~ CCP1CON_P1M = 2  -- Half bridge operation
+--~ PWM1CON_PDC = 15 -- Dead time
+------------------------------------------------------------------
+
+-- Timer0 configuration ------------------------------------------
+T0CON_T0CS = 0   -- internal clock
+T0CON_PSA  = 0   -- assign prescaler to timer0
+T0CON_T0PS = 0   -- prescaler 1:2
+T0CON_T08BIT = 0 -- 16bit timer
+
+--~ INTCON_TMR0IF = off -- clear interupt flag
+--~ INTCON_TMR0IE = on  -- Enable tmr0 interrupt
+--~ INTCON_GIE  = on    -- Enable global interrupt
+------------------------------------------------------------------
+
+-- LCD Config ----------------------------------------------------
+const byte LCD_ROWS    =  2           -- LCD with 2 lines
+const byte LCD_CHARS   =  16          -- and 16 characters per line
+--
+alias     lcd_en       is pin_D7      -- data trigger
+alias     lcd_rs       is pin_D6      -- command/data select.
+pin_D6_direction       = output
+pin_D7_direction       = output
+--
+alias     lcd_d4       is pin_D0
+alias     lcd_d5       is pin_D1
+alias     lcd_d6       is pin_D2
+alias     lcd_d7       is pin_D3
+--
+pin_D0_direction       = output
+pin_D1_direction       = output
+pin_D2_direction       = output
+pin_D3_direction       = output
+
+include lcd_hd44780_4
+include print
+--
+lcd_init()                            -- init the lcd controller
+
+var byte line1[LCD_CHARS] = " YO COCINO RICO!"
+var byte line2[LCD_CHARS]
+var byte i, k
+lcd_clear_screen()
+print_string(lcd, line1)
+
+delay_100ms(10)
+lcd_clear_screen()
+
+------------------------------------------------------------------
+
+-- IO Config -----------------------------------------------------
+alias v_in is pin_B0
+alias i_in is pin_B1
+
+alias b_1 is pin_B4
+alias b_2 is pin_B5
+alias b_3 is pin_B6
+
+pin_B0_direction = input
+pin_B1_direction = input
+
+pin_B4_direction = input
+pin_B5_direction = input
+pin_B6_direction = input
+
+alias led is pin_B7
+pin_B7_direction = output
+------------------------------------------------------------------
+
+-- External Interrupts -------------------------------------------
+INTCON2_INTEDG0 = 0 -- enable falling edge detection in INT0, INT1
+INTCON2_INTEDG1 = 0
+
+INTCON_INT0IF = 0 -- Clear interrupt flag
+INTCON3_INT1IF = 0 
+
+INTCON_INT0IE = 1 -- Enable external interrupts INT0, INT1
+INTCON3_INT1IE = 1
+
+INTCON_GIE  = on    -- Enable global interrupt
+------------------------------------------------------------------
+
+
+var dword freq
+var word duty
+
+var byte index = 0 -- Menu index
+var bit power_on = off
+
+var byte timer_s
+var byte timer_m
+var byte timer_h 
+
+var bit update = true
+
+var word state = debounce_init(10) -- Debounce
+
+procedure menu_home is
+    line1 = "ACTIVAR POTENCIA"
+    line2 = "     TIMER      "
+    
+    lcd_clear_screen()
+    print_string(lcd, line1)
+    
+    lcd_cursor_position(1,0)
+    print_string(lcd, line2)    
+
+end procedure
+
+-- Set Time Menu
+procedure menu_timer is
+    line1 = "TIMER           "
+    --~ line2 = 
+    
+    lcd_clear_screen()
+    lcd_cursor_position(0,0)
+    print_string(lcd, line1)
+    
+    --~ lcd_cursor_position(1,0)
+    --~ print_string(lcd, line2)  
+
+end procedure
+
+-- Set Power Menu
+procedure menu_power is
+    line1 = "Power           "
+    lcd_clear_screen()
+    lcd_cursor_position(0,0)
+    print_string(lcd, line1)
+
+end procedure
+
+-- Main Menu FSM
+procedure menu_fsm is
+    pragma inline
+        
+    -- Home Menu
+    if index == 0 then
+        if update == true then
+            menu_home()
+            update = off
+        end if
+        
+        --~ if (debounce(b_2, state) == 2) then -- Switch to Timer Menu
+        if b_2 == false then
+            index = 1
+            update = on
+            
+        --~ elsif (debounce(b_3, state) == 2) then -- Switch to Power Menu
+        elsif b_3 == false then
+            index = 2
+            update = on
+            
+        --~ elsif (debounce(b_1, state) == 2) then -- Turn ON Power
+        elsif b_1 == false then
+            power_on = !power_on
+        end if
+        
+    -- Timer Menu
+    elsif index == 1 then
+        if update == true then
+            menu_timer()
+            update = off
+        end if
+        
+        --~ if (debounce(b_1, state) == 2) then -- Go back home
+        if b_1 == false then
+            index = 0
+            update = on
+        end if
+        
+    -- Power Menu
+    elsif index == 2 then
+        if update == true then
+            menu_power()
+            update = off
+        end if
+        
+        --~ if (debounce(b_1, state) == 2) then -- Go back home
+        if b_1 == false then
+            index = 0
+            update = on
+        end if
+        
+    end if
+
+end procedure
+
+forever loop
+    menu_fsm()
+    
+    if power_on == true then
+        duty = pwm_get_resolution()/2
+    
+        pwm_set_frequency(50000)
+    
+        pwm1_set_dutycycle_highres(duty)
+        pwm1_on()
+    else
+        pwm1_off()
+    end if
+    
+    --~ delay_100ms(1)
+        
+    
+    
+end loop
+
+
+procedure Timer_ISR is
+    pragma interrupt
+    
+    --~ if INTCON_TMR0IF == true then
+        --~ pwm_set_frequency(50000)
+        --~ pwm1_set_dutycycle_highres(duty)
+    
+        --~ INTCON_TMR0IF = off
+    --~ end if
+    
+    if INTCON_INT0IF == true then
+        led = on
+        INTCON_INT0IF = 0 
+    end if
+    
+    if INTCON3_INT1IF == true then
+        led = off
+        INTCON3_INT1IF = 0    
+    end if 
+
+end procedure

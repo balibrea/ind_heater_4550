@@ -1,0 +1,485 @@
+-- main_ind.jal
+-- 
+-- Copyright 2023 Yosel de Jesús Balibrea Lastre <yosel.balibrea@gmail.com>
+-- 
+-- This program is free software; you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation; either version 2 of the License, or
+-- (at your option) any later version.
+-- 
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+-- 
+-- You should have received a copy of the GNU General Public License
+-- along with this program; if not, write to the Free Software
+-- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+-- MA 02110-1301, USA.
+-- 
+-- 
+
+--
+;@jallib section chipdef
+-- chip setup
+include 18f4550
+
+pragma target clock       20_000_000
+
+
+-- fuses
+pragma target PLLDIV        P5          -- divide by 5 - 20MHZ_INPUT
+pragma target CPUDIV        P1          -- [primary oscillator src: /1][96 mhz pll src: /2]
+pragma target USBDIV        P2          -- CLOCK_SRC_FROM_96MHZ_PLL_2
+pragma target OSC           HS
+pragma target FCMEN         DISABLED
+pragma target IESO          DISABLED
+pragma target PWRTE         DISABLED    -- power up timer
+pragma target VREGEN        ENABLED     -- USB voltage regulator
+pragma target VOLTAGE       MINIMUM     -- brown out voltage
+pragma target BROWNOUT      DISABLED    -- no brownout detection
+pragma target WDTPS         P32K        -- watch dog saler setting
+pragma target WDT           CONTROL     -- watchdog software controlled
+pragma target CCP2MUX       pin_C1      -- CCP2 on pin C1
+pragma target PBADEN        DIGITAL     -- digital input port<0..4>
+pragma target LPT1OSC       LOW_POWER   -- low power timer 1
+pragma target MCLR          EXTERNAL    -- master reset on RE3
+pragma target STVR          DISABLED    -- reset on stack over/under flow
+pragma target LVP           DISABLED    -- no low-voltage programming
+pragma target XINST         DISABLED     -- extended instruction set
+pragma target DEBUG         DISABLED    -- background debugging
+pragma target CP0           DISABLED    -- code block 0 not protected
+pragma target CP1           DISABLED    -- code block 1 not protected
+pragma target CP2           DISABLED    -- code block 2 not protected
+pragma target CP3           DISABLED    -- code block 3 not protected
+pragma target CPB           DISABLED    -- bootblock code not write protected
+pragma target CPD           DISABLED    -- eeprom code not write protected
+pragma target WRT0          DISABLED    -- table writeblock 0 not protected
+pragma target WRT1          DISABLED    -- table write block 1 not protected
+pragma target WRT2          DISABLED    -- table write block 2 not protected
+pragma target WRT3          DISABLED    -- table write block 3 not protected
+pragma target WRTB          DISABLED    -- bootblock not write protected
+pragma target WRTD          DISABLED    -- eeprom not write protected
+pragma target WRTC          DISABLED    -- config not write protected
+pragma target EBTR0         DISABLED    -- table read block 0 not protected
+pragma target EBTR1         DISABLED    -- table read block 1 not protected
+pragma target EBTR2         DISABLED    -- table read block 2 not protected
+pragma target EBTR3         DISABLED    -- table read block 3 not protected
+pragma target EBTRB         DISABLED    -- boot block not protected
+
+WDTCON_SWDTEN = OFF                     -- disable watchdog
+;@jallib section ccp
+-- no specific ccp settings, section required though to generate samples
+
+enable_digital_io()                 -- make all pins digital I/O
+
+include print
+include delay
+include debounce
+
+-- IO Config -----------------------------------------------------
+pin_P1A_direction = output
+pin_P1B_direction = output
+pin_P1A = off
+pin_P1B = off
+
+alias v_in is pin_B0
+alias i_in is pin_B1
+
+alias b_1 is pin_B4
+alias b_2 is pin_B5
+alias b_3 is pin_B6
+
+pin_B0_direction = input
+pin_B1_direction = input
+
+pin_B4_direction = input
+pin_B5_direction = input
+pin_B6_direction = input
+
+alias led is pin_B7
+pin_B7_direction = output
+------------------------------------------------------------------
+
+-- Gloval variables ----------------------------------------------
+var dword freq
+var word duty
+var byte power = 2 -- 25% -> (4) 50% -> (2)
+var byte phi = 0
+
+var byte index = 0 -- Menu index
+var bit power_on = off
+
+var byte timer_s
+var byte timer_m
+var word timer_mm
+var byte timer_h 
+
+var byte timer_ss -- Set points
+var byte timer_ms
+var byte timer_hs
+
+var bit update = true
+var bit timer_en = false -- Enable/Disable count down
+
+const byte THRESHOLD = 50
+
+var word b1_st = debounce_init(THRESHOLD) -- Debounce
+var word b2_st = debounce_init(THRESHOLD)
+var word b3_st = debounce_init(THRESHOLD)
+
+--------------------------------------------------------------------
+
+-- PWM -----------------------------------------------------------
+include pwm_hardware
+pwm_max_resolution(1)
+
+pwm_set_frequency(25000)
+pwm1_set_dutycycle_percent(50)
+pwm1_off()
+
+-- Set output PWM stage configurations to work as 
+-- Half bridge output
+procedure set_pwm_config is
+pragma inline
+    CCP1CON_CCP1M = 0xC
+    CCP1CON_P1M = 2  -- Half bridge operation
+    ECCP1DEL_PDC  = 15 -- Dead time
+end procedure
+
+-- Turn on PWM module
+procedure turn_on is
+    duty = pwm_get_resolution()/power
+    
+    pwm_set_frequency(50000)    
+    pwm1_set_dutycycle_highres(duty)
+    pwm1_on()
+        
+    set_pwm_config() 
+end procedure
+
+------------------------------------------------------------------
+
+-- Timer0 configuration ------------------------------------------
+T0CON_T0CS = 0   -- internal clock
+T0CON_PSA  = 0   -- assign prescaler to timer0
+T0CON_T0PS = 2   -- prescaler 1:8
+T0CON_T08BIT = 1 -- 8bit timer
+
+INTCON_TMR0IF = off -- clear interupt flag
+--~ INTCON_TMR0IE = on  -- Enable tmr0 interrupt
+--~ INTCON_GIE  = on    -- Enable global interrupt
+------------------------------------------------------------------
+
+-- LCD Config ----------------------------------------------------
+const byte LCD_ROWS    =  2           -- LCD with 2 lines
+const byte LCD_CHARS   =  16          -- and 16 characters per line
+--
+alias     lcd_en       is pin_D7      -- data trigger
+alias     lcd_rs       is pin_D6      -- command/data select.
+pin_D6_direction       = output
+pin_D7_direction       = output
+--
+alias     lcd_d4       is pin_D0
+alias     lcd_d5       is pin_D1
+alias     lcd_d6       is pin_D2
+alias     lcd_d7       is pin_D3
+--
+pin_D0_direction       = output
+pin_D1_direction       = output
+pin_D2_direction       = output
+pin_D3_direction       = output
+
+include lcd_hd44780_4
+include print
+--
+lcd_init()                            -- init the lcd controller
+
+var byte line1[LCD_CHARS] = "Mi Cocina de Ind"
+var byte line2[LCD_CHARS]
+var byte clock_line[LCD_CHARS]
+var byte i, k
+lcd_clear_screen()
+print_string(lcd, line1)
+
+delay_100ms(10)
+lcd_clear_screen()
+
+------------------------------------------------------------------
+
+-- External Interrupts -------------------------------------------
+INTCON2_INTEDG0 = 0 -- enable falling edge detection in INT0, INT1
+INTCON2_INTEDG1 = 0
+
+INTCON_INT0IF = 0 -- Clear interrupt flag
+INTCON3_INT1IF = 0 
+
+INTCON_INT0IE = 1 -- Enable external interrupts INT0, INT1
+INTCON3_INT1IE = 1
+
+INTCON_GIE  = on    -- Enable global interrupt
+------------------------------------------------------------------
+procedure set_timer_on is
+
+end procedure
+
+procedure timer_off is
+
+end procedure
+
+procedure timer_count_down is
+    if timer_en == true then
+        if ((timer_h == timer_hs) & (timer_m == timer_ms) & (timer_s == timer_ss)) then
+            power_on = false
+        end if
+        
+        if timer_mm >= 1000 then
+            timer_s = timer_s + BYTE(timer_mm/1000)
+            timer_mm = timer_mm % 1000
+        end if
+        
+        -- Set clock vars
+        if timer_s > 59 then
+            timer_s = 0
+            timer_m = timer_m + 1
+            
+        elsif timer_m > 59 then
+            timer_m = 0
+            timer_h = timer_h + 1
+            
+        elsif timer_h > 2 then
+            timer_h = 0
+        end if
+    
+    end if
+end procedure
+
+procedure menu_home is
+    if power_on == true then
+        line2 = "APAGAR  TIM  POT"
+        line1 = clock_line
+    else
+        line1 = "ACTIVAR POTENCIA"
+        line2 = "     TIMER      "
+    end if
+    
+    lcd_clear_screen()
+    print_string(lcd, line1)
+    
+    lcd_cursor_position(1,0)
+    print_string(lcd, line2)    
+
+end procedure
+
+-- Set Time Menu
+procedure menu_timer is
+    line1 = "TIMER           "
+    --~ line2 = 
+    
+    lcd_clear_screen()
+    lcd_cursor_position(0,0)
+    print_string(lcd, line1)
+    
+    lcd_cursor_position(1,0)
+    print_byte_dec(lcd, timer_hs)
+    lcd = ":"
+    print_byte_dec(lcd, timer_ms)
+    lcd = ":"
+    print_byte_dec(lcd, timer_ss)
+    --~ print_string(lcd, line2)  
+
+end procedure
+
+procedure menu_msg is
+    line1 = " Activar Timer? "
+    line2 = "      SI    NO  "
+    
+    lcd_clear_screen()
+    lcd_cursor_position(0,0)
+    print_string(lcd, line1)
+    lcd_cursor_position(1,0)
+    print_string(lcd, line2)    
+
+end procedure
+
+-- Set Power Menu
+procedure menu_power is
+    const byte str[] = "Power: "
+    lcd_clear_screen()
+    lcd_cursor_position(0,0)
+    print_string(lcd, str)
+    if power == 2 then
+        print_string(lcd, "50%")
+    else
+        print_string(lcd, "25%")
+    end if
+
+end procedure
+
+procedure menu_debug is
+    const byte str[] = "Phi: "
+    lcd_clear_screen()
+    lcd_cursor_position(0,0)
+    print_string(lcd, str)
+    print_byte_dec(lcd, phi)
+
+end procedure
+
+-- Main Menu FSM
+procedure menu_fsm is
+    pragma inline
+        
+    -- Home Menu
+    if index == 0 then
+        if update == true then
+            menu_home()
+            update = off
+        end if
+        
+        if (debounce(b_2, b2_st) == 2) then -- Switch to Timer Menu
+            index = 1
+            update = on
+        end if
+            
+        if (debounce(b_3, b3_st) == 2) then -- Switch to Power Menu
+            index = 2
+            update = on
+        end if
+            
+        if (debounce(b_1, b1_st) == 2) then -- Turn ON Power
+            power_on = !power_on
+            update = on
+            if power_on == true then
+                turn_on()
+            else
+                pwm1_off()
+                pin_P1A = off -- Make sure all is off
+                pin_P1B = off
+            end if
+                      
+        end if
+        
+    -- Timer Menu
+    elsif index == 1 then
+        if update == true then
+            menu_timer()
+            update = off
+        end if
+        
+        if (debounce(b_1, b1_st) == 2) then -- ask to activate timer
+            index = 3
+            update = on
+            
+        elsif (debounce(b_2, b2_st) == 0) then
+            timer_ss = timer_ss + 1
+            if timer_ss >= 60 then
+                timer_ss = 0
+                timer_ms = timer_ms + 1
+            elsif timer_ms >= 59 then
+                timer_ms = 0
+                timer_hs = timer_hs + 1
+            elsif timer_hs > 1 then
+                timer_hs = 0
+            end if
+                
+        elsif (debounce(b_3, b3_st) == 0) then
+            timer_ss = timer_ss - 1
+            if timer_ss >= 60 then
+                timer_ss = 0
+                timer_ms = timer_ms - 1
+            elsif timer_ms >= 59 then
+                timer_ms = 0
+                timer_hs = timer_hs - 1
+            elsif timer_hs > 1 then
+                timer_hs = 0
+            end if
+        end if
+        
+    -- Power Menu
+    elsif index == 2 then
+        if update == true then
+            menu_power()
+            update = off
+        end if
+        
+        if (debounce(b_1, b1_st) == 2) then -- Go back home
+            index = 0
+            update = on
+        elsif (debounce(b_2, b2_st) == 2) then
+            power = 2
+            if power_on == true then
+                turn_on()
+            end if            
+            update = on
+        elsif (debounce(b_3, b3_st) == 2) then
+            power = 4
+            if power_on == true then
+                turn_on()
+            end if            
+            update = on
+        end if
+    
+    -- Timer Msg Menu
+    elsif index == 3 then -- Timer msg menu
+        if update == true then
+            menu_msg()
+            update = off
+        end if
+    
+        if (debounce(b_2, b2_st) == 2) then -- Turn on Timer
+            timer_en = true
+            index = 0
+            update = true
+            set_timer_on()
+        end if
+            
+        if (debounce(b_3, b3_st) == 2) then -- Turn off Timer
+            timer_en = false
+            index = 0
+            update = true
+            timer_off()
+        end if
+        
+    end if
+
+end procedure
+
+forever loop
+    menu_fsm()   
+    
+    timer_count_down()
+        
+    --~ delay_100ms(1)    
+    
+end loop
+
+
+procedure ISR is
+    pragma interrupt
+    
+    if INTCON_TMR0IF == true then
+        --~ INTCON_GIE  = off -- No more interrupts at this moment
+        
+        if timer_en == true then
+            timer_mm = timer_mm + 819
+        end if
+        
+        INTCON_TMR0IF = off   -- Clear interrupt flag     
+        --~ INTCON_GIE  = on      -- Enable Global interrupts
+    end if
+    
+    if INTCON_INT0IF == true then
+        INTCON_GIE  = off
+        led = on
+        INTCON_INT0IF = 0 
+        INTCON_GIE  = on
+    end if
+    
+    if INTCON3_INT1IF == true then
+        INTCON_GIE  = off
+        led = off
+        INTCON3_INT1IF = 0    
+        INTCON_GIE  = on
+    end if 
+
+end procedure

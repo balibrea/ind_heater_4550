@@ -77,6 +77,7 @@ include print
 include delay
 include debounce
 
+
 -- IO Config -----------------------------------------------------
 pin_P1A_direction = output
 pin_P1B_direction = output
@@ -87,18 +88,22 @@ alias v_in is pin_B0
 alias i_in is pin_B1
 
 alias b_1 is pin_B4
-alias b_2 is pin_B5
-alias b_3 is pin_B6
+alias b_2 is pin_B3
+alias b_3 is pin_B2
 
 pin_B0_direction = input
 pin_B1_direction = input
 
 pin_B4_direction = input
-pin_B5_direction = input
-pin_B6_direction = input
+pin_B3_direction = input
+pin_B2_direction = input
 
 alias led is pin_B7
 pin_B7_direction = output
+------------------------------------------------------------------
+
+-- Wait to power stabilice ---------------------------------------
+delay_100ms(10)
 ------------------------------------------------------------------
 
 -- Gloval variables ----------------------------------------------
@@ -172,8 +177,8 @@ INTCON_TMR0IF = off -- clear interupt flag
 ------------------------------------------------------------------
 
 -- LCD Config ----------------------------------------------------
-const byte LCD_ROWS    =  2           -- LCD with 2 lines
-const byte LCD_CHARS   =  16          -- and 16 characters per line
+const byte LCD_ROWS    =  4           -- LCD with 2 lines
+const byte LCD_CHARS   =  20          -- and 16 characters per line
 --
 alias     lcd_en       is pin_D7      -- data trigger
 alias     lcd_rs       is pin_D6      -- command/data select.
@@ -195,7 +200,7 @@ include print
 --
 lcd_init()                            -- init the lcd controller
 
-var byte line1[LCD_CHARS] = "Mi Cocina de Ind"
+var byte line1[LCD_CHARS] = "Mi Cocina de Inducc "
 var byte line2[LCD_CHARS]
 var byte clock_line[LCD_CHARS]
 var byte i, k
@@ -256,11 +261,11 @@ end procedure
 
 procedure menu_home is
     if power_on == true then
-        line2 = "APAGAR  TIM  POT"
+        line2 = " APAGAR  TIMER  POT "
         line1 = clock_line
     else
-        line1 = "ACTIVAR POTENCIA"
-        line2 = "     TIMER      "
+        line1 = " ACTIVAR   POTENCIA "
+        line2 = "       TIMER        "
     end if
     
     lcd_clear_screen()
@@ -273,7 +278,7 @@ end procedure
 
 -- Set Time Menu
 procedure menu_timer is
-    line1 = "TIMER           "
+    line1 = " TIMER              "
     --~ line2 = 
     
     lcd_clear_screen()
@@ -291,8 +296,8 @@ procedure menu_timer is
 end procedure
 
 procedure menu_msg is
-    line1 = " Activar Timer? "
-    line2 = "      SI    NO  "
+    line1 = "   Activar Timer?   "
+    line2 = "       SI      NO   "
     
     lcd_clear_screen()
     lcd_cursor_position(0,0)

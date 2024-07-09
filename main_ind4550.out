@@ -1,0 +1,17 @@
+jal jalv24q6 (compiled Oct 25 2016)
+generating p-code
+1482 tokens, 219580 chars; 5310 lines; 15 files
+generating PIC code pass 1
+generating PIC code pass 2
+682 data accesses checked, 0 errors
+152 skips checked, 0 errors
+writing result
+C:\Jallibws\lib/pwm_ccp1.jal:88: warning: "pwm1_set_dutycycle_highres() is deprecated,
+.. use pwm1_set_dutycycle_percent() or pwm1_set_dutycycle_ratio()"
+Code area: 4592 of 32768 used (bytes)
+Data area: 227 of 2048 used
+Software stack available: 1813 bytes
+Hardware stack depth 4 of 31
+0 errors, 1 warnings
+
+

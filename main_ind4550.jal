@@ -1,23 +1,23 @@
 -- main_ind.jal
--- 
+--
 -- Copyright 2023 Yosel de Jesús Balibrea Lastre <yosel.balibrea@gmail.com>
--- 
+--
 -- This program is free software; you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
 -- the Free Software Foundation; either version 2 of the License, or
 -- (at your option) any later version.
--- 
+--
 -- This program is distributed in the hope that it will be useful,
 -- but WITHOUT ANY WARRANTY; without even the implied warranty of
 -- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 -- GNU General Public License for more details.
--- 
+--
 -- You should have received a copy of the GNU General Public License
 -- along with this program; if not, write to the Free Software
 -- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 -- MA 02110-1301, USA.
--- 
--- 
+--
+--
 
 --
 ;@jallib section chipdef
@@ -87,9 +87,9 @@ pin_P1B = off
 alias v_in is pin_B0
 alias i_in is pin_B1
 
-alias b_1 is pin_B4
+alias b_1 is pin_B2
 alias b_2 is pin_B3
-alias b_3 is pin_B2
+alias b_3 is pin_B4
 
 pin_B0_direction = input
 pin_B1_direction = input
@@ -106,6 +106,25 @@ pin_B7_direction = output
 delay_100ms(10)
 ------------------------------------------------------------------
 
+-- Configure ADC ------------------------------------------------
+-- We won't use any external VRef, so measures are done
+-- according to PIC powering voltage
+const byte ADC_NVREF = ADC_NO_EXT_VREF
+
+--~ -- The maximum resistance while measuring ADC is... (unit: ohms)
+--~ -- Being accurate helps speeding up ADC acquisition
+--~ const word ADC_RSOURCE = 2_000
+--~ -- In this example, we'll perform low resolution ADC: results are
+--~ -- coded on 8bits
+
+const bit ADC_HIGH_RESOLUTION = true
+const byte ADC_NCHANNEL = 1
+-- Now include the famous library
+include adc
+
+-- And initialize the whole with our parameters
+adc_init()
+
 -- Gloval variables ----------------------------------------------
 var dword freq
 var word duty
@@ -118,7 +137,7 @@ var bit power_on = off
 var byte timer_s
 var byte timer_m
 var word timer_mm
-var byte timer_h 
+var byte timer_h
 
 var byte timer_ss -- Set points
 var byte timer_ms
@@ -143,24 +162,25 @@ pwm_set_frequency(25000)
 pwm1_set_dutycycle_percent(50)
 pwm1_off()
 
--- Set output PWM stage configurations to work as 
+-- Set output PWM stage configurations to work as
 -- Half bridge output
-procedure set_pwm_config is
-pragma inline
+procedure set_pwm_config() is
+    pragma inline
     CCP1CON_CCP1M = 0xC
     CCP1CON_P1M = 2  -- Half bridge operation
     ECCP1DEL_PDC  = 15 -- Dead time
 end procedure
 
+
 -- Turn on PWM module
-procedure turn_on is
+procedure turn_on() is
     duty = pwm_get_resolution()/power
-    
-    pwm_set_frequency(50000)    
+
+    pwm_set_frequency(50000)
     pwm1_set_dutycycle_highres(duty)
     pwm1_on()
-        
-    set_pwm_config() 
+
+    set_pwm_config()
 end procedure
 
 ------------------------------------------------------------------
@@ -202,7 +222,7 @@ lcd_init()                            -- init the lcd controller
 
 var byte line1[LCD_CHARS] = "Mi Cocina de Inducc "
 var byte line2[LCD_CHARS]
-var byte clock_line[LCD_CHARS]
+var byte clock_line[LCD_CHARS] = " Tiempo: 00:00:00   "
 var byte i, k
 lcd_clear_screen()
 print_string(lcd, line1)
@@ -217,7 +237,7 @@ INTCON2_INTEDG0 = 0 -- enable falling edge detection in INT0, INT1
 INTCON2_INTEDG1 = 0
 
 INTCON_INT0IF = 0 -- Clear interrupt flag
-INTCON3_INT1IF = 0 
+INTCON3_INT1IF = 0
 
 INTCON_INT0IE = 1 -- Enable external interrupts INT0, INT1
 INTCON3_INT1IE = 1
@@ -237,73 +257,110 @@ procedure timer_count_down is
         if ((timer_h == timer_hs) & (timer_m == timer_ms) & (timer_s == timer_ss)) then
             power_on = false
         end if
-        
+
         if timer_mm >= 1000 then
             timer_s = timer_s + BYTE(timer_mm/1000)
             timer_mm = timer_mm % 1000
         end if
-        
+
         -- Set clock vars
         if timer_s > 59 then
             timer_s = 0
             timer_m = timer_m + 1
-            
+
         elsif timer_m > 59 then
             timer_m = 0
             timer_h = timer_h + 1
-            
+
         elsif timer_h > 2 then
             timer_h = 0
         end if
-    
+
     end if
 end procedure
 
 procedure menu_home is
     if power_on == true then
-        line2 = " APAGAR  TIMER  POT "
-        line1 = clock_line
+        line1 = " APAGAR  TIMER  POT "
+        line2 = clock_line
     else
         line1 = " ACTIVAR   POTENCIA "
         line2 = "       TIMER        "
     end if
-    
+
     lcd_clear_screen()
     print_string(lcd, line1)
-    
+
     lcd_cursor_position(1,0)
-    print_string(lcd, line2)    
+    print_string(lcd, line2)
+
+end procedure
+
+-- Debug Menu warning
+procedure debug_msg is
+    line1 = "Entrar en modo debug"
+    line2 = "       SI      NO   "
+    lcd_clear_screen()
+    lcd_cursor_position(0,0)
+    print_string(lcd, line1)
+    lcd_cursor_position(1,0)
+    print_string(lcd, line2)
+end procedure
+
+procedure menu_debug is
+
+    const byte str0[] = "Freq: "
+    const byte str1[] = "Phi: "
+    const byte str2[] = "duty: "
+    const byte str3[] = "Power status: "
+
+    lcd_clear_screen()
+    lcd_cursor_position(0,0)
+    print_string(lcd, str0)
+    print_dword_dec(lcd, freq)
+
+    lcd_cursor_position(1,0)
+    print_string(lcd, str1)
+    print_byte_dec(lcd, phi)
+
+    lcd_cursor_position(2,0)
+    print_string(lcd, str2)
+    print_dword_dec(lcd, duty)
+
+    lcd_cursor_position(3,0)
+    print_string(lcd, str3)
+    print_byte_dec(lcd, power_on)
 
 end procedure
 
 -- Set Time Menu
 procedure menu_timer is
     line1 = " TIMER              "
-    --~ line2 = 
-    
+    --~ line2 =
+
     lcd_clear_screen()
     lcd_cursor_position(0,0)
     print_string(lcd, line1)
-    
+
     lcd_cursor_position(1,0)
     print_byte_dec(lcd, timer_hs)
     lcd = ":"
     print_byte_dec(lcd, timer_ms)
     lcd = ":"
     print_byte_dec(lcd, timer_ss)
-    --~ print_string(lcd, line2)  
+    --~ print_string(lcd, line2)
 
 end procedure
 
 procedure menu_msg is
     line1 = "   Activar Timer?   "
     line2 = "       SI      NO   "
-    
+
     lcd_clear_screen()
     lcd_cursor_position(0,0)
     print_string(lcd, line1)
     lcd_cursor_position(1,0)
-    print_string(lcd, line2)    
+    print_string(lcd, line2)
 
 end procedure
 
@@ -321,36 +378,27 @@ procedure menu_power is
 
 end procedure
 
-procedure menu_debug is
-    const byte str[] = "Phi: "
-    lcd_clear_screen()
-    lcd_cursor_position(0,0)
-    print_string(lcd, str)
-    print_byte_dec(lcd, phi)
-
-end procedure
-
 -- Main Menu FSM
 procedure menu_fsm is
     pragma inline
-        
+
     -- Home Menu
     if index == 0 then
         if update == true then
             menu_home()
             update = off
         end if
-        
+
         if (debounce(b_2, b2_st) == 2) then -- Switch to Timer Menu
             index = 1
             update = on
         end if
-            
+
         if (debounce(b_3, b3_st) == 2) then -- Switch to Power Menu
             index = 2
             update = on
         end if
-            
+
         if (debounce(b_1, b1_st) == 2) then -- Turn ON Power
             power_on = !power_on
             update = on
@@ -361,20 +409,20 @@ procedure menu_fsm is
                 pin_P1A = off -- Make sure all is off
                 pin_P1B = off
             end if
-                      
+
         end if
-        
+
     -- Timer Menu
     elsif index == 1 then
         if update == true then
             menu_timer()
             update = off
         end if
-        
+
         if (debounce(b_1, b1_st) == 2) then -- ask to activate timer
             index = 3
             update = on
-            
+
         elsif (debounce(b_2, b2_st) == 0) then
             timer_ss = timer_ss + 1
             if timer_ss >= 60 then
@@ -386,7 +434,7 @@ procedure menu_fsm is
             elsif timer_hs > 1 then
                 timer_hs = 0
             end if
-                
+
         elsif (debounce(b_3, b3_st) == 0) then
             timer_ss = timer_ss - 1
             if timer_ss >= 60 then
@@ -399,14 +447,14 @@ procedure menu_fsm is
                 timer_hs = 0
             end if
         end if
-        
+
     -- Power Menu
     elsif index == 2 then
         if update == true then
             menu_power()
             update = off
         end if
-        
+
         if (debounce(b_1, b1_st) == 2) then -- Go back home
             index = 0
             update = on
@@ -414,77 +462,77 @@ procedure menu_fsm is
             power = 2
             if power_on == true then
                 turn_on()
-            end if            
+            end if
             update = on
         elsif (debounce(b_3, b3_st) == 2) then
             power = 4
             if power_on == true then
                 turn_on()
-            end if            
+            end if
             update = on
         end if
-    
+
     -- Timer Msg Menu
     elsif index == 3 then -- Timer msg menu
         if update == true then
             menu_msg()
             update = off
         end if
-    
+
         if (debounce(b_2, b2_st) == 2) then -- Turn on Timer
             timer_en = true
             index = 0
             update = true
             set_timer_on()
         end if
-            
+
         if (debounce(b_3, b3_st) == 2) then -- Turn off Timer
             timer_en = false
             index = 0
             update = true
             timer_off()
         end if
-        
+
     end if
 
 end procedure
 
 forever loop
-    menu_fsm()   
-    
+    menu_fsm()
+
     timer_count_down()
-        
-    --~ delay_100ms(1)    
-    
+
+    --~ delay_100ms(1)
+
 end loop
 
 
 procedure ISR is
     pragma interrupt
-    
+
     if INTCON_TMR0IF == true then
         --~ INTCON_GIE  = off -- No more interrupts at this moment
-        
+
         if timer_en == true then
             timer_mm = timer_mm + 819
         end if
-        
-        INTCON_TMR0IF = off   -- Clear interrupt flag     
+
+        INTCON_TMR0IF = off   -- Clear interrupt flag
         --~ INTCON_GIE  = on      -- Enable Global interrupts
     end if
-    
+
     if INTCON_INT0IF == true then
         INTCON_GIE  = off
         led = on
-        INTCON_INT0IF = 0 
+        INTCON_INT0IF = 0
         INTCON_GIE  = on
     end if
-    
+
     if INTCON3_INT1IF == true then
         INTCON_GIE  = off
         led = off
-        INTCON3_INT1IF = 0    
+        INTCON3_INT1IF = 0
         INTCON_GIE  = on
-    end if 
+    end if
 
 end procedure

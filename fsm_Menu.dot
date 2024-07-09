@@ -1,0 +1,41 @@
+//.\dot.exe -Tpng -o .\test.png -Gdpi=300 .\fsm_Menu.dot
+//
+
+digraph MenuStateMachine{
+    //Define los nodos con colores y formas especificos
+    node [shape=rectangle, style=filled, color=lightblue, fontcolor=black];
+
+    //subgrafo para alinear parcialmente los nodos
+    subgraph cluster_0 {
+        label = "Estados";
+        style = dashed;
+
+        Home [label="Home (index = 0)"];
+        Timer [label="Timer (index = 1)"];
+        Power [label="Power (index = 2)"];
+        Timer_msg [label="Timer_msg (index = 3)"];
+        Power_on [label="Power ON (index = 4)"];
+    }
+
+    subgraph cluster_1 {
+         label = "Otros estados";
+         style = dashed;
+
+         Debug [label="Debug (index=6)"];
+         Debug_msg [label="Debug msg (index = 5)"];
+    }
+
+    // Define las conexiones entre nodos
+    Home -> Timer [label="Button 2"];
+    Home -> Power [label="Button 3"];
+    Home -> Power_on [label="Button 1"];
+    Home -> Debug_msg [label="Button 2 & Button 3"];
+    Debug_msg -> Debug [label = "Button 2"];
+    Debug_msg -> Home [label = "Button 3", color=green, fontcolor=green];
+    Debug -> Home [label = "Button 1"];
+
+    Timer -> Timer_msg [label = "Button 2 o Button 3"];
+    Timer_msg -> Home [label = "Button 1"];
+
+    Power -> Home [label = "Button 1"];
+}

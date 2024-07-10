@@ -14,22 +14,21 @@ digraph MenuStateMachine{
         Timer [label="Timer (index = 1)"];
         Power [label="Power (index = 2)"];
         Timer_msg [label="Timer_msg (index = 3)"];
-        Power_on [label="Power ON (index = 4)"];
     }
 
     subgraph cluster_1 {
          label = "Otros estados";
          style = dashed;
 
-         Debug [label="Debug (index=6)"];
-         Debug_msg [label="Debug msg (index = 5)"];
+         Debug [label="Debug (index=5)"];
+         Debug_msg [label="Debug msg (index = 4)"];
     }
 
     // Define las conexiones entre nodos
     Home -> Timer [label="Button 2"];
     Home -> Power [label="Button 3"];
-    Home -> Power_on [label="Button 1"];
-    Home -> Debug_msg [label="Button 2 & Button 3"];
+    //~ Home -> Debug_msg [label="Button 2 & Button 3"];
+    Power -> Debug_msg [label="Button 1 = rising & Button 2 = 0", color=red, fontcolor=red];
     Debug_msg -> Debug [label = "Button 2"];
     Debug_msg -> Home [label = "Button 3", color=green, fontcolor=green];
     Debug -> Home [label = "Button 1"];

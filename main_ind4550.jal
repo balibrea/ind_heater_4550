@@ -126,7 +126,7 @@ include adc
 adc_init()
 
 -- Gloval variables ----------------------------------------------
-var dword freq
+var dword freq = 50_000
 var word duty
 var byte power = 2 -- 25% -> (4) 50% -> (2)
 var byte phi = 0
@@ -152,6 +152,10 @@ var word b1_st = debounce_init(THRESHOLD) -- Debounce
 var word b2_st = debounce_init(THRESHOLD)
 var word b3_st = debounce_init(THRESHOLD)
 
+-- Debug vars
+var byte debug_index = 0
+var bit debug_flag = OFF
+
 --------------------------------------------------------------------
 
 -- PWM -----------------------------------------------------------
@@ -176,7 +180,7 @@ end procedure
 procedure turn_on() is
     duty = pwm_get_resolution()/power
 
-    pwm_set_frequency(50000)
+    pwm_set_frequency(freq)
     pwm1_set_dutycycle_highres(duty)
     pwm1_on()
 
@@ -316,18 +320,24 @@ procedure menu_debug is
 
     lcd_clear_screen()
     lcd_cursor_position(0,0)
+
+    for debug_index loop
+        print_string(lcd, "  ")
+    end loop
+    print_string(lcd, "->")
+
     print_string(lcd, str0)
     print_dword_dec(lcd, freq)
 
-    lcd_cursor_position(1,0)
+    lcd_cursor_position(1,2)
     print_string(lcd, str1)
     print_byte_dec(lcd, phi)
 
-    lcd_cursor_position(2,0)
+    lcd_cursor_position(2,2)
     print_string(lcd, str2)
     print_dword_dec(lcd, duty)
 
-    lcd_cursor_position(3,0)
+    lcd_cursor_position(3,2)
     print_string(lcd, str3)
     print_byte_dec(lcd, power_on)
 
@@ -394,7 +404,7 @@ procedure menu_fsm is
             update = on
         end if
 
-        if (debounce(b_3, b3_st) == 2) then -- Switch to Power Menu
+        if (debounce(b_3, b3_st) == 2) then -- Switch to Power Menu setting
             index = 2
             update = on
         end if
@@ -472,6 +482,12 @@ procedure menu_fsm is
             update = on
         end if
 
+        if (debounce(b_1, b1_st) == 2 & debounce(b_2, b2_st) == 0) then -- Go Debug mode
+           index = 4
+           update = on
+        end if
+
+
     -- Timer Msg Menu
     elsif index == 3 then -- Timer msg menu
         if update == true then
@@ -491,6 +507,90 @@ procedure menu_fsm is
             index = 0
             update = true
             timer_off()
+        end if
+
+    -- Debug Msg Menu
+    elsif index == 4 then
+        if update == true then
+            debug_msg()
+            update = off
+        end if
+
+        if (debounce(b_3, b3_st) == 2) then -- Go home
+            index = 0
+            update = true
+        end if
+
+        if (debounce(b_2, b2_st) == 2) then -- Go Debug
+            index = 5
+            update = true
+        end if
+
+    -- Debug Menu
+    elsif index == 5 then
+        if update == true then
+            menu_debug()
+            update = off
+        end if
+
+
+        if (debug_index == 0) then
+            -- Move freq up or down
+            if (debounce(b_2, b2_st) == 2) then    -- UP
+                update = on
+                freq = freq + 500
+                if (freq >= 50_000) then
+                    freq = 50_000
+                end if
+            end if
+
+            if (debounce(b_2, b2_st) == 2) then   -- Down
+                update = on
+                freq = freq - 500
+                if (freq <= 10_000) then
+                    freq = 10_000
+                end if
+            end if
+        elsif (debug_index == 2) then
+            -- Move duty up or down
+            if (debounce(b_2, b2_st) == 2) then    -- UP
+                update = on
+                duty = duty + 1
+            end if
+
+            if (debounce(b_2, b2_st) == 2) then   -- Down
+                update = on
+                duty = duty - 1
+            end if
+
+        elsif (debug_index == 3) then
+            -- Turn on or Off
+            if (debounce(b_2, b2_st) == 2) then
+                turn_on()
+            end if
+
+            if (debounce(b_2, b2_st) == 2) then
+                pwm1_off()
+                pin_P1A = off -- Make sure all is off
+                pin_P1B = off
+            end if
+
+        end if
+
+        -- Change arrow position to select parameters
+        if (debounce(b_1, b1_st) == 0) then
+            debug_index = debug_index + 1
+            update = on
+            debug_flag = on
+            if (debug_index >= 3) then
+                debug_index = 0
+            end if
+        end if
+
+        if (debounce(b_1, b1_st) == 3 & debug_flag == ON) then -- Go back home
+            index = 0
+            update = on
+            debug_flag = OFF
         end if
 
     end if

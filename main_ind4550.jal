@@ -126,18 +126,19 @@ include adc
 adc_init()
 
 -- Gloval variables ----------------------------------------------
-var dword freq = 50_000
+var dword freq = 25_000
+var dword debug_freq = 25_000
 var word duty
 var byte power = 2 -- 25% -> (4) 50% -> (2)
 var byte phi = 0
 
-var byte index = 5 -- Menu index
+var byte index = 0 -- Menu index
 var bit power_on = off
 
-var byte timer_s
-var byte timer_m
-var word timer_mm
-var byte timer_h
+var byte timer_s =0
+var byte timer_m =10
+var word timer_mm =0
+var byte timer_h = 0
 
 var byte timer_ss -- Set points
 var byte timer_ms
@@ -154,6 +155,7 @@ var word b3_st = debounce_init(THRESHOLD)
 
 -- Debug vars
 var byte debug_index = 0
+var bit debug_flag = OFF
 
 --------------------------------------------------------------------
 
@@ -177,7 +179,11 @@ end procedure
 
 -- Turn on PWM module
 procedure turn_on() is
-    duty = pwm_get_resolution()/power
+    if debug_flag then
+        freq = debug_freq
+    else
+        duty = pwm_get_resolution()/power
+    end if
 
     pwm_set_frequency(freq)
     pwm1_set_dutycycle_highres(duty)
@@ -316,21 +322,25 @@ procedure menu_debug is
     const byte str1[] = "Phi: "
     const byte str2[] = "duty: "
     const byte str3[] = "Power status: "
-    const byte str4[] = "Salir <-"
+    const byte str4[] = " Salir <-"
 
     lcd_clear_screen()
     lcd_cursor_position(0,0)
 
     if (debug_index < 4) then
         var byte n
-        for debug_index using n loop
+        for 4 using n loop
             lcd_cursor_position(n,0)
-            print_string(lcd, "  ")
+            if (n == debug_index) then
+                print_string(lcd, "->")
+            else
+                print_string(lcd, "  ")
+            end if
         end loop
-        print_string(lcd, "->")
 
+        lcd_cursor_position(0,2)
         print_string(lcd, str0)
-        print_dword_dec(lcd, freq)
+        print_dword_dec(lcd, debug_freq)
 
         lcd_cursor_position(1,2)
         print_string(lcd, str1)
@@ -345,6 +355,8 @@ procedure menu_debug is
         print_string(lcd, str3)
         print_byte_dec(lcd, power_on)
     else
+        lcd_clear_screen()
+        lcd_cursor_position(0,0)
         print_string(lcd, "->")
         print_string(lcd, str4)
     end if
@@ -542,46 +554,69 @@ procedure menu_fsm is
             update = off
         end if
 
+        debug_flag = ON -- Debug mode, some parameters changes!
+
 
         if (debug_index == 0) then
             -- Move freq up or down
             if (debounce(b_2, b2_st) == 2) then    -- UP
                 update = on
-                freq = freq + 500
+                debug_freq = debug_freq + 100
                 if (freq >= 50_000) then
                     freq = 50_000
                 end if
+
+                if (power_on) then
+                    turn_on()
+                end if
             end if
 
-            if (debounce(b_2, b2_st) == 2) then   -- Down
+            if (debounce(b_3, b3_st) == 2) then   -- Down
                 update = on
-                freq = freq - 500
+                debug_freq = debug_freq - 100
                 if (freq <= 10_000) then
                     freq = 10_000
                 end if
+
+                if (power_on) then
+                    turn_on()
+                end if
             end if
+
         elsif (debug_index == 2) then
             -- Move duty up or down
             if (debounce(b_2, b2_st) == 2) then    -- UP
                 update = on
                 duty = duty + 1
+
+                if (power_on) then
+                    turn_on()
+                end if
             end if
 
-            if (debounce(b_2, b2_st) == 2) then   -- Down
+            if (debounce(b_3, b3_st) == 2) then   -- Down
                 update = on
                 duty = duty - 1
+
+                if (power_on) then
+                    turn_on()
+                end if
             end if
 
         elsif (debug_index == 3) then
             -- Turn on or Off
             if (debounce(b_2, b2_st) == 2) then
                 turn_on()
+                power_on = on
+                update = on
             end if
 
-            if (debounce(b_2, b2_st) == 2) then
+            if (debounce(b_3, b3_st) == 2) then
+                power_on = off
                 pwm1_off()
                 pin_P1A = off -- Make sure all is off
                 pin_P1B = off
+                update = on
             end if
 
         end if
@@ -590,7 +625,7 @@ procedure menu_fsm is
         if (debounce(b_1, b1_st) == 2) then
             debug_index = debug_index + 1
             update = on
-            if (debug_index >= 4) then
+            if (debug_index > 4) then
                 debug_index = 0
             end if
         end if
@@ -600,12 +635,14 @@ procedure menu_fsm is
             if (debounce(b_2, b2_st) == 2) then -- Go back home
                 index = 0
                 debug_index = 0
+                debug_flag = OFF
                 update = on
             end if
 
             if (debounce(b_3, b3_st) == 2) then -- Go back home
                 index = 0
                 debug_index = 0
+                debug_flag = OFF
                 update = on
             end if
         end if

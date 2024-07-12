@@ -131,7 +131,7 @@ var word duty
 var byte power = 2 -- 25% -> (4) 50% -> (2)
 var byte phi = 0
 
-var byte index = 0 -- Menu index
+var byte index = 5 -- Menu index
 var bit power_on = off
 
 var byte timer_s
@@ -154,7 +154,6 @@ var word b3_st = debounce_init(THRESHOLD)
 
 -- Debug vars
 var byte debug_index = 0
-var bit debug_flag = OFF
 
 --------------------------------------------------------------------
 
@@ -317,29 +316,39 @@ procedure menu_debug is
     const byte str1[] = "Phi: "
     const byte str2[] = "duty: "
     const byte str3[] = "Power status: "
+    const byte str4[] = "Salir <-"
 
     lcd_clear_screen()
     lcd_cursor_position(0,0)
 
-    for debug_index loop
-        print_string(lcd, "  ")
-    end loop
-    print_string(lcd, "->")
+    if (debug_index < 4) then
+        var byte n
+        for debug_index using n loop
+            lcd_cursor_position(n,0)
+            print_string(lcd, "  ")
+        end loop
+        print_string(lcd, "->")
 
-    print_string(lcd, str0)
-    print_dword_dec(lcd, freq)
+        print_string(lcd, str0)
+        print_dword_dec(lcd, freq)
 
-    lcd_cursor_position(1,2)
-    print_string(lcd, str1)
-    print_byte_dec(lcd, phi)
+        lcd_cursor_position(1,2)
+        print_string(lcd, str1)
+        --~ print_byte_dec(lcd, phi)
+        print_byte_dec(lcd, debug_index)
 
-    lcd_cursor_position(2,2)
-    print_string(lcd, str2)
-    print_dword_dec(lcd, duty)
+        lcd_cursor_position(2,2)
+        print_string(lcd, str2)
+        print_dword_dec(lcd, duty)
 
-    lcd_cursor_position(3,2)
-    print_string(lcd, str3)
-    print_byte_dec(lcd, power_on)
+        lcd_cursor_position(3,2)
+        print_string(lcd, str3)
+        print_byte_dec(lcd, power_on)
+    else
+        print_string(lcd, "->")
+        print_string(lcd, str4)
+    end if
+
 
 end procedure
 
@@ -578,19 +587,27 @@ procedure menu_fsm is
         end if
 
         -- Change arrow position to select parameters
-        if (debounce(b_1, b1_st) == 0) then
+        if (debounce(b_1, b1_st) == 2) then
             debug_index = debug_index + 1
             update = on
-            debug_flag = on
-            if (debug_index >= 3) then
+            if (debug_index >= 4) then
                 debug_index = 0
             end if
         end if
 
-        if (debounce(b_1, b1_st) == 3 & debug_flag == ON) then -- Go back home
-            index = 0
-            update = on
-            debug_flag = OFF
+        if (debug_index == 4) then
+
+            if (debounce(b_2, b2_st) == 2) then -- Go back home
+                index = 0
+                debug_index = 0
+                update = on
+            end if
+
+            if (debounce(b_3, b3_st) == 2) then -- Go back home
+                index = 0
+                debug_index = 0
+                update = on
+            end if
         end if
 
     end if

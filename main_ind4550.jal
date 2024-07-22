@@ -128,8 +128,7 @@ adc_init()
 -- Gloval variables ----------------------------------------------
 var dword freq = 25_000
 var dword debug_freq = 25_000
-var word duty
-var byte power = 2 -- 25% -> (4) 50% -> (2)
+var byte duty = 50  -- Duty cicle percent
 var byte phi = 0
 
 var byte index = 0 -- Menu index
@@ -181,16 +180,22 @@ end procedure
 procedure turn_on() is
     if debug_flag then
         freq = debug_freq
-    else
-        duty = pwm_get_resolution()/power
     end if
 
     pwm_set_frequency(freq)
-    pwm1_set_dutycycle_highres(duty)
+    pwm1_set_dutycycle_percent(duty)
     pwm1_on()
 
     set_pwm_config()
 end procedure
+
+--~ procedure power_mgr() is
+    --~ if power_on == true then
+        --~ turn_on()
+    --~ else
+        --~ turn_off()
+    --~ end if
+--~ end procedure
 
 ------------------------------------------------------------------
 
@@ -289,19 +294,33 @@ procedure timer_count_down is
 end procedure
 
 procedure menu_home is
+    lcd_clear_screen()
+    lcd_cursor_position(0,0)
+
     if power_on == true then
         line1 = " APAGAR  TIMER  POT "
-        line2 = clock_line
+        print_string(lcd, line1)
+
+        lcd_cursor_position(1,0)
+        -- Loock for timer values if enabled
+        if (timer_en) then
+            print_string(lcd, " Tiempo: ")
+            print_byte_dec(lcd, timer_h)
+            print_string(lcd, ":")
+            print_byte_dec(lcd, timer_m)
+            print_string(lcd, ":")
+            print_byte_dec(lcd, timer_s)
+        else
+            print_string(lcd, " Tiempo: off")
+        end if
     else
         line1 = " ACTIVAR   POTENCIA "
         line2 = "       TIMER        "
-    end if
 
-    lcd_clear_screen()
-    print_string(lcd, line1)
-
-    lcd_cursor_position(1,0)
-    print_string(lcd, line2)
+        print_string(lcd, line1)
+        lcd_cursor_position(1,0)
+        print_string(lcd, line2)
+    end if   
 
 end procedure
 
@@ -328,6 +347,7 @@ procedure menu_debug is
     lcd_cursor_position(0,0)
 
     if (debug_index < 4) then
+        -- Print -> promt to select parameter
         var byte n
         for 4 using n loop
             lcd_cursor_position(n,0)
@@ -341,6 +361,7 @@ procedure menu_debug is
         lcd_cursor_position(0,2)
         print_string(lcd, str0)
         print_dword_dec(lcd, debug_freq)
+        print_string(lcd, "Hz")
 
         lcd_cursor_position(1,2)
         print_string(lcd, str1)
@@ -350,6 +371,7 @@ procedure menu_debug is
         lcd_cursor_position(2,2)
         print_string(lcd, str2)
         print_dword_dec(lcd, duty)
+        print_string(lcd, "%")
 
         lcd_cursor_position(3,2)
         print_string(lcd, str3)
@@ -397,15 +419,11 @@ end procedure
 
 -- Set Power Menu
 procedure menu_power is
-    const byte str[] = "Power: "
     lcd_clear_screen()
     lcd_cursor_position(0,0)
-    print_string(lcd, str)
-    if power == 2 then
-        print_string(lcd, "50%")
-    else
-        print_string(lcd, "25%")
-    end if
+    print_string(lcd, "Power: ")
+    print_byte_dec(lcd, duty)
+    print_string(lcd, "%")
 
 end procedure
 
@@ -465,6 +483,7 @@ procedure menu_fsm is
             elsif timer_hs > 1 then
                 timer_hs = 0
             end if
+            update = on
 
         elsif (debounce(b_3, b3_st) == 0) then
             timer_ss = timer_ss - 1
@@ -477,6 +496,7 @@ procedure menu_fsm is
             elsif timer_hs > 1 then
                 timer_hs = 0
             end if
+            update = on
         end if
 
     -- Power Menu
@@ -489,14 +509,19 @@ procedure menu_fsm is
         if (debounce(b_1, b1_st) == 2) then -- Go back home
             index = 0
             update = on
-        elsif (debounce(b_2, b2_st) == 2) then
-            power = 2
+        elsif (debounce(b_2, b2_st) == 2) then  -- Power Up
+            duty = duty + 1
+            if (duty > 100) then
+                duty = 100
+            end if
             if power_on == true then
                 turn_on()
             end if
             update = on
-        elsif (debounce(b_3, b3_st) == 2) then
-            power = 4
+        elsif (debounce(b_3, b3_st) == 2) then  -- Power Down
+            if (duty > 0) then
+                duty = duty - 1
+            end if
             if power_on == true then
                 turn_on()
             end if
@@ -589,6 +614,10 @@ procedure menu_fsm is
                 update = on
                 duty = duty + 1
 
+                if (duty > 100) then
+                    duty = 100
+                end if
+
                 if (power_on) then
                     turn_on()
                 end if
@@ -596,7 +625,9 @@ procedure menu_fsm is
 
             if (debounce(b_3, b3_st) == 2) then   -- Down
                 update = on
-                duty = duty - 1
+                if (duty > 0) then
+                    duty = duty - 1
+                end if
 
                 if (power_on) then
                     turn_on()

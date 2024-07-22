@@ -1078,8 +1078,8 @@ l__l376
                                movwf    v_debug_freq+1,v__access
                                clrf     v_debug_freq+2,v__access
                                clrf     v_debug_freq+3,v__access
-;  132 var byte power = 2 -- 25% -> (4) 50% -> (2)
-                               movlw    2
+;  132 var byte power = 8 -- 25% -> (4) 50% -> (2)
+                               movlw    8
                                movwf    v_power,v__access
 ;  135 var byte index = 0 -- Menu index
                                clrf     v_index,v__access
@@ -1669,7 +1669,7 @@ l__l708
                                movwf    v_ccp1con,v__access
                                movlw    128
                                andwf    v_eccp1del,w,v__access
-                               iorlw    15
+                               iorlw    50
                                movwf    v_eccp1del,v__access
                                return   
 l__l706

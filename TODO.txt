@@ -1,0 +1,7 @@
+* Duty 10%
+* Tiempo muerto ++
+* Resonant freq track
+* Fix timer
+* Power switch
+* Buzzer
+* LCD Led control

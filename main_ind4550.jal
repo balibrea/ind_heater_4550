@@ -173,7 +173,7 @@ procedure set_pwm_config() is
     pragma inline
     CCP1CON_CCP1M = 0xC
     CCP1CON_P1M = 2  -- Half bridge operation
-    ECCP1DEL_PDC  = 15 -- Dead time
+    ECCP1DEL_PDC  = 50 -- Dead time
 end procedure
 
 

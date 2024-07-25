@@ -130,24 +130,27 @@ var dword freq = 25_000
 var dword debug_freq = 25_000
 var byte duty = 50  -- Duty cicle percent
 var byte phi = 0
-var word shift = 0
+var word shift = 0 -- Time phase shift
 
 var byte index = 0 -- Menu index
 var bit power_on = off
 
-var byte timer_s =0
-var byte timer_m =10
-var word timer_mm =0
+-- Count down vars
+var byte timer_s = 0
+var byte timer_m = 0
 var byte timer_h = 0
 
-var byte timer_ss -- Set points
-var byte timer_ms
-var byte timer_hs
+var byte timer_ss = 30 -- Set points
+var byte timer_ms = 1
+var byte timer_hs = 0
 
-var bit update = true
+-- Update clock after 1 sec interrupt
+var bit count_flag = Off
+
+var bit update = true    -- Update screen!
 var bit timer_en = false -- Enable/Disable count down
 
-const byte THRESHOLD = 50
+const byte THRESHOLD = 50  -- Button press threshold
 
 var word b1_st = debounce_init(THRESHOLD) -- Debounce
 var word b2_st = debounce_init(THRESHOLD)
@@ -188,16 +191,16 @@ procedure turn_on() is
     pwm1_on()
 
     set_pwm_config()
-    
+
     -- TODO: relay switch
 
     -- Enable external interrups
     -- At the beginning we only spect zero cross voltage interrupts
-    -- When this interrupt is triggered, count starts until zero cross 
+    -- When this interrupt is triggered, count starts until zero cross
     -- current interrupt
     INTCON_INT0IE = 1 -- Enable external interrupts INT0, INT1
     INTCON3_INT1IE = 0
-    
+
     INTCON_INT0IF = 0 -- Clear interrupts flags
     INTCON3_INT1IF = 0
 
@@ -297,45 +300,75 @@ delay_100ms(10)
 lcd_clear_screen()
 
 ------------------------------------------------------------------
-
-procedure timerMgr is
-    if timer_en then
-        T0CON_TMR0ON = on -- enable timer0
-    else
-        T0CON_TMR0ON = off
-
-    end if
-end procedure
-
-
-procedure timer_count_down is
+-- Implements a count down
+------------------------------------------------------------------
+procedure timer_count_down() is
     if timer_en == true then
-        if ((timer_h == timer_hs) & (timer_m == timer_ms) & (timer_s == timer_ss)) then
+        if ((timer_h == 0) & (timer_m == 0) & (timer_s == 0)) then
+            timer_en = off
             power_on = off
             turn_off()
             -- TODO: Beep procedure
         end if
 
-        if timer_mm >= 1000 then
-            timer_s = timer_s + BYTE(timer_mm/1000)
-            timer_mm = timer_mm % 1000
-        end if
-
         -- Set clock vars
-        if timer_s > 59 then
-            timer_s = 0
-            timer_m = timer_m + 1
-
-        elsif timer_m > 59 then
-            timer_m = 0
-            timer_h = timer_h + 1
-
-        elsif timer_h > 2 then
-            timer_h = 0
+        if timer_s > 0 then
+            timer_s = timer_s - 1
+        else
+            timer_s = 59
+            if timer_m > 0 then
+                timer_m = timer_m -1
+            else
+                timer_m = 59
+                if timer_h > 0 then
+                    timer_h = timer_h - 1
+                end if
+            end if
         end if
 
     end if
 end procedure
+
+--------------------------------------------------------------
+procedure set_timer() is
+    -- Enable timer 0 interrupt
+    INTCON_TMR0IE = 1
+    INTCON_TMR0IF = 0 -- Clear interrupt flag
+
+    T0CON_TMR0ON = on -- enable timer0
+
+    -- Set points for count down
+    timer_h = timer_hs
+    timer_m = timer_ms
+    timer_s = timer_ss
+
+end procedure
+
+--------------------------------------------------------------
+procedure timerMgr is
+    if timer_en then
+
+        -- Perform a count down...
+        if count_flag then
+            timer_count_down()
+            count_flag = 0
+            update = 1
+        end if
+    else
+        -- Tmr0 OFF
+        T0CON_TMR0ON = off
+
+        -- Disable Timer 0 interrupt
+        INTCON_TMR0IE = 0
+
+        -- Clear set points
+        timer_h = 0
+        timer_m = 0
+        timer_s = 0
+
+    end if
+end procedure
+
 
 procedure menu_home is
     lcd_clear_screen()
@@ -364,7 +397,7 @@ procedure menu_home is
         print_string(lcd, line1)
         lcd_cursor_position(1,0)
         print_string(lcd, line2)
-    end if   
+    end if
 
 end procedure
 
@@ -412,7 +445,7 @@ procedure menu_debug is
         --~ print_byte_dec(lcd, phi)
         print_byte_dec(lcd, debug_index)
 
-        print_string(lcd, " Shift: ")
+        print_string(lcd, " Psh: ")
         print_dword_dec(lcd, shift)
 
         lcd_cursor_position(2,2)
@@ -517,12 +550,19 @@ procedure menu_fsm is
             index = 3
             update = on
 
-        elsif (debounce(b_2, b2_st) == 0) then
+        elsif (debounce(b_2, b2_st) == 2) then  -- Timer Up
             timer_ss = timer_ss + 1
-            if timer_ss >= 60 then
+            if timer_ss > 59 then
                 timer_ss = 0
                 timer_ms = timer_ms + 1
-            elsif timer_ms >= 59 then
+                if timer_ms > 59 then
+                    timer_ms = 0
+                    timer_hs = timer_hs + 1
+                    if timer_hs > 1 then
+                        timer_hs = 1
+                    end if
+                end if
+            elsif timer_ms > 59 then
                 timer_ms = 0
                 timer_hs = timer_hs + 1
             elsif timer_hs > 1 then
@@ -530,16 +570,19 @@ procedure menu_fsm is
             end if
             update = on
 
-        elsif (debounce(b_3, b3_st) == 0) then
-            timer_ss = timer_ss - 1
-            if timer_ss >= 60 then
-                timer_ss = 0
-                timer_ms = timer_ms - 1
-            elsif timer_ms >= 59 then
-                timer_ms = 0
-                timer_hs = timer_hs - 1
-            elsif timer_hs > 1 then
-                timer_hs = 0
+        elsif (debounce(b_3, b3_st) == 2) then  -- Timer Down
+            if (timer_ss > 0) then
+                timer_ss = timer_ss - 1
+            else
+                timer_ss = 59
+                if (timer_ms > 0) then
+                    timer_ms = timer_ms - 1
+                else
+                    timer_ms = 59
+                    if timer_hs > 0 then
+                        timer_hs = timer_hs - 1
+                    end if
+                end if
             end if
             update = on
         end if
@@ -590,14 +633,15 @@ procedure menu_fsm is
             timer_en = true
             index = 0
             update = true
-            set_timer_on()
+
+            set_timer()
+
         end if
 
         if (debounce(b_3, b3_st) == 2) then -- Turn off Timer
             timer_en = false
             index = 0
             update = true
-            timer_off()
         end if
 
     -- Debug Msg Menu
@@ -725,12 +769,11 @@ procedure menu_fsm is
 
 end procedure
 
+-- Main loop
 forever loop
     menu_fsm()
 
-    timer_count_down()
-
-    --~ delay_100ms(1)
+    timerMgr()
 
 end loop
 
@@ -739,29 +782,27 @@ procedure ISR is
     pragma interrupt
 
     -- Timer 1 (countdown) interrupt
-
     if INTCON_TMR0IF == true then
-
-        if timer_en == true then
-            timer_mm = timer_mm + 819
-        end if
-
+        -- Perform count down
+        count_flag = true
+        TMR0 = 46004
         INTCON_TMR0IF = off   -- Clear interrupt flag
     end if
-
+   
     -- External interrupts --------------------------
+
     -- INT0 interrupt Voltage zero cross
     if INTCON_INT0IF == true then
         -- Enable Timer 1
-        T1CON_TMR1ON = 1 
+        T1CON_TMR1ON = 1
         TMR1 = 0 -- reset timer
 
         -- Disable INT0 interrupt
         INTCON_INT0IE = 0
         -- Enable INT1 interrupt
-        INTCON3_INT1IE = 1       
-        
-        INTCON_INT0IF = 0  -- clear flag        
+        INTCON3_INT1IE = 1
+
+        INTCON_INT0IF = 0  -- clear flag
     end if
 
     -- INT1 interrupt current zero cross
@@ -774,9 +815,9 @@ procedure ISR is
 
         -- Enable INT0 interrupt
         INTCON_INT0IE = 1
-        
+
         INTCON3_INT1IF = 0  -- clear flag
-        
+
     end if
 
 end procedure

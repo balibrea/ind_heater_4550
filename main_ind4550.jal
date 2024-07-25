@@ -130,6 +130,7 @@ var dword freq = 25_000
 var dword debug_freq = 25_000
 var byte duty = 50  -- Duty cicle percent
 var byte phi = 0
+var word shift = 0
 
 var byte index = 0 -- Menu index
 var bit power_on = off
@@ -187,27 +188,78 @@ procedure turn_on() is
     pwm1_on()
 
     set_pwm_config()
+    
+    -- TODO: relay switch
+
+    -- Enable external interrups
+    -- At the beginning we only spect zero cross voltage interrupts
+    -- When this interrupt is triggered, count starts until zero cross 
+    -- current interrupt
+    INTCON_INT0IE = 1 -- Enable external interrupts INT0, INT1
+    INTCON3_INT1IE = 0
+    
+    INTCON_INT0IF = 0 -- Clear interrupts flags
+    INTCON3_INT1IF = 0
+
+    -- Turn On Timer 1
+    T1CON_TMR1ON = 1
 end procedure
 
---~ procedure power_mgr() is
-    --~ if power_on == true then
-        --~ turn_on()
-    --~ else
-        --~ turn_off()
-    --~ end if
---~ end procedure
+procedure turn_off() is
+    pwm1_off()
+    pin_P1A = off -- Make sure all is off
+    pin_P1B = off
+
+    -- TODO: relay switch
+
+    -- Disable external interrups
+    INTCON_INT0IE = 0
+    INTCON3_INT1IE = 0
+
+    -- Turn Off Timer 1
+    T1CON_TMR1ON = 0
+
+end procedure
 
 ------------------------------------------------------------------
 
 -- Timer0 configuration ------------------------------------------
+-- This timer is used in 16 bit operation mode for clock count down
+
 T0CON_T0CS = 0   -- internal clock
 T0CON_PSA  = 0   -- assign prescaler to timer0
-T0CON_T0PS = 2   -- prescaler 1:8
-T0CON_T08BIT = 1 -- 8bit timer
+T0CON_T0PS = 7   -- prescaler 1:256
+T0CON_T08BIT = 0 -- 16bit timer
 
-INTCON_TMR0IF = off -- clear interupt flag
---~ INTCON_TMR0IE = on  -- Enable tmr0 interrupt
---~ INTCON_GIE  = on    -- Enable global interrupt
+-- When countdow is enabled we generate an interrupt every second
+-- precharge_value = 65535 - (desired time (1s)) * inst_clock / prescaller
+-- 65353 - 19531.25 = 46004
+TMR0 = 46004    -- Precharge value
+-- This timer is enabled when count down is activated via LCD Timer menu
+------------------------------------------------------------------
+
+-- Timer 1 is used to measure phase shift btween voltage and current
+-- wave forms, it is used as a free running counter and reseted after
+-- zero coss current interrupt.
+T1CON_TMR1CS = 0 -- Use instruction clock (fclk/4)
+T1CON_RD16 = 1   -- Use 16bit read/write operations
+T1CON_T1CKPS = 0 -- Prescale value 1:1
+TMR1 = 0
+
+-- This timer is enabled only when power on
+
+-- External Interrupts -------------------------------------------
+-- INT0 --> volttage interrupt
+-- INT1 --> current interrupt
+INTCON2_INTEDG0 = 0 -- enable falling edge detection in INT0
+INTCON2_INTEDG1 = 0 -- enable falling edge detection in INT1
+
+INTCON_INT0IF = 0 -- Clear interrupts flags
+INTCON3_INT1IF = 0
+
+INTCON_GIE  = on    -- Enable global interrupt
+
+-- INT0 and INT1 interrups must be enabled when power on
 ------------------------------------------------------------------
 
 -- LCD Config ----------------------------------------------------
@@ -246,30 +298,22 @@ lcd_clear_screen()
 
 ------------------------------------------------------------------
 
--- External Interrupts -------------------------------------------
-INTCON2_INTEDG0 = 0 -- enable falling edge detection in INT0, INT1
-INTCON2_INTEDG1 = 0
+procedure timerMgr is
+    if timer_en then
+        T0CON_TMR0ON = on -- enable timer0
+    else
+        T0CON_TMR0ON = off
 
-INTCON_INT0IF = 0 -- Clear interrupt flag
-INTCON3_INT1IF = 0
-
-INTCON_INT0IE = 1 -- Enable external interrupts INT0, INT1
-INTCON3_INT1IE = 1
-
-INTCON_GIE  = on    -- Enable global interrupt
-------------------------------------------------------------------
-procedure set_timer_on is
-
+    end if
 end procedure
 
-procedure timer_off is
-
-end procedure
 
 procedure timer_count_down is
     if timer_en == true then
         if ((timer_h == timer_hs) & (timer_m == timer_ms) & (timer_s == timer_ss)) then
-            power_on = false
+            power_on = off
+            turn_off()
+            -- TODO: Beep procedure
         end if
 
         if timer_mm >= 1000 then
@@ -368,6 +412,9 @@ procedure menu_debug is
         --~ print_byte_dec(lcd, phi)
         print_byte_dec(lcd, debug_index)
 
+        print_string(lcd, " Shift: ")
+        print_dword_dec(lcd, shift)
+
         lcd_cursor_position(2,2)
         print_string(lcd, str2)
         print_dword_dec(lcd, duty)
@@ -454,9 +501,7 @@ procedure menu_fsm is
             if power_on == true then
                 turn_on()
             else
-                pwm1_off()
-                pin_P1A = off -- Make sure all is off
-                pin_P1B = off
+                turn_off()
             end if
 
         end if
@@ -581,7 +626,7 @@ procedure menu_fsm is
 
         debug_flag = ON -- Debug mode, some parameters changes!
 
-
+        -- Change freq
         if (debug_index == 0) then
             -- Move freq up or down
             if (debounce(b_2, b2_st) == 2) then    -- UP
@@ -644,9 +689,7 @@ procedure menu_fsm is
 
             if (debounce(b_3, b3_st) == 2) then
                 power_on = off
-                pwm1_off()
-                pin_P1A = off -- Make sure all is off
-                pin_P1B = off
+                turn_off()
                 update = on
             end if
 
@@ -695,29 +738,45 @@ end loop
 procedure ISR is
     pragma interrupt
 
+    -- Timer 1 (countdown) interrupt
+
     if INTCON_TMR0IF == true then
-        --~ INTCON_GIE  = off -- No more interrupts at this moment
 
         if timer_en == true then
             timer_mm = timer_mm + 819
         end if
 
         INTCON_TMR0IF = off   -- Clear interrupt flag
-        --~ INTCON_GIE  = on      -- Enable Global interrupts
     end if
 
+    -- External interrupts --------------------------
+    -- INT0 interrupt Voltage zero cross
     if INTCON_INT0IF == true then
-        INTCON_GIE  = off
-        led = on
-        INTCON_INT0IF = 0
-        INTCON_GIE  = on
+        -- Enable Timer 1
+        T1CON_TMR1ON = 1 
+        TMR1 = 0 -- reset timer
+
+        -- Disable INT0 interrupt
+        INTCON_INT0IE = 0
+        -- Enable INT1 interrupt
+        INTCON3_INT1IE = 1       
+        
+        INTCON_INT0IF = 0  -- clear flag        
     end if
 
+    -- INT1 interrupt current zero cross
     if INTCON3_INT1IF == true then
-        INTCON_GIE  = off
-        led = off
-        INTCON3_INT1IF = 0
-        INTCON_GIE  = on
+        -- Take phase shift
+        shift = TMR1
+
+        -- Disable INT1 interrupt
+        INTCON3_INT1IE = 0
+
+        -- Enable INT0 interrupt
+        INTCON_INT0IE = 1
+        
+        INTCON3_INT1IF = 0  -- clear flag
+        
     end if
 
 end procedure

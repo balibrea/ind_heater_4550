@@ -111,34 +111,36 @@ v_adc_nvref                    EQU 0
 v_freq                         EQU 0x0047  ; freq
 v_debug_freq                   EQU 0x004b  ; debug_freq
 v_duty                         EQU 0x004f  ; duty
-v_shift                        EQU 0x0050  ; shift
-v_index                        EQU 0x0052  ; index
-v_power_on                     EQU 0x008c  ; power_on-->_bitbucket:0
-v_timer_s                      EQU 0x0053  ; timer_s
-v_timer_m                      EQU 0x0054  ; timer_m
-v_timer_h                      EQU 0x0055  ; timer_h
-v_timer_ss                     EQU 0x0056  ; timer_ss
-v_timer_ms                     EQU 0x0057  ; timer_ms
-v_timer_hs                     EQU 0x0058  ; timer_hs
-v_count_flag                   EQU 0x008c  ; count_flag-->_bitbucket:1
-v_update                       EQU 0x008c  ; update-->_bitbucket:2
-v_timer_en                     EQU 0x008c  ; timer_en-->_bitbucket:3
-v____temp_65                   EQU 0x0059  ; _temp
-v_b1_st                        EQU 0x005b  ; b1_st
-v_b2_st                        EQU 0x005d  ; b2_st
-v_b3_st                        EQU 0x005f  ; b3_st
-v_debug_index                  EQU 0x0061  ; debug_index
-v_debug_flag                   EQU 0x008c  ; debug_flag-->_bitbucket:4
+v_phi                          EQU 0x0050  ; phi
+v_shift                        EQU 0x0051  ; shift
+v_index                        EQU 0x0053  ; index
+v_power_on                     EQU 0x008d  ; power_on-->_bitbucket:0
+v_timer_s                      EQU 0x0054  ; timer_s
+v_timer_m                      EQU 0x0055  ; timer_m
+v_timer_h                      EQU 0x0056  ; timer_h
+v_timer_ss                     EQU 0x0057  ; timer_ss
+v_timer_ms                     EQU 0x0058  ; timer_ms
+v_timer_hs                     EQU 0x0059  ; timer_hs
+v_resolution                   EQU 200
+v_count_flag                   EQU 0x008d  ; count_flag-->_bitbucket:1
+v_update                       EQU 0x008d  ; update-->_bitbucket:2
+v_timer_en                     EQU 0x008d  ; timer_en-->_bitbucket:3
+v____temp_65                   EQU 0x005a  ; _temp
+v_b1_st                        EQU 0x005c  ; b1_st
+v_b2_st                        EQU 0x005e  ; b2_st
+v_b3_st                        EQU 0x0060  ; b3_st
+v_debug_index                  EQU 0x0062  ; debug_index
+v_debug_flag                   EQU 0x008d  ; debug_flag-->_bitbucket:4
 v__pr2_shadow_plus1            EQU 0x0038  ; _pr2_shadow_plus1
-v__ccpr1l_shadow               EQU 0x0062  ; _ccpr1l_shadow
-v__ccp1con_shadow              EQU 0x0063  ; _ccp1con_shadow
+v__ccpr1l_shadow               EQU 0x0063  ; _ccpr1l_shadow
+v__ccp1con_shadow              EQU 0x0064  ; _ccp1con_shadow
 v_lcd_rows                     EQU 4
 v_lcd_clear_display            EQU 1
 v_lcd_set_ddram_address        EQU 128
 v_lcd_pos                      EQU 0x003a  ; lcd_pos
-v_line1                        EQU 0x0064  ; line1
-v_line2                        EQU 0x0078  ; line2
-v__bitbucket                   EQU 0x008c  ; _bitbucket
+v_line1                        EQU 0x0065  ; line1
+v_line2                        EQU 0x0079  ; line2
+v__bitbucket                   EQU 0x008d  ; _bitbucket
 v__pic_temp                    EQU 0x0008  ; _pic_temp-->_pic_state
 v__pic_pointer                 EQU 0x002e  ; _pic_pointer
 v__pic_loop                    EQU 0x002a  ; _pic_loop
@@ -157,39 +159,47 @@ v__pic_state                   EQU 0x0008  ; _pic_state
 v__pic_isr_state               EQU 0x0018  ; _pic_isr_state
 v___x_112                      EQU 0x0f8b  ; x-->latc:2
 v___x_113                      EQU 0x0f8c  ; x-->latd:5
-v___vcfg_shadow_2              EQU 0x0095  ; vcfg_shadow
-v___state_13                   EQU 0x0095  ; state
-v___s_3                        EQU 0x0095  ; s-->state13
-v___state_14                   EQU 0x0095  ; state
-v___s_4                        EQU 0x0095  ; s-->state14
-v___state_15                   EQU 0x0095  ; state
-v___s_5                        EQU 0x0095  ; s-->state15
-v____temp_91                   EQU 0x0095  ; _temp
-v____btemp120_1                EQU 0x008c  ; _btemp120-->_bitbucket:34
-v____btemp121_1                EQU 0x008c  ; _btemp121-->_bitbucket:35
-v____btemp122_1                EQU 0x008c  ; _btemp122-->_bitbucket:36
-v____temp_90                   EQU 0       ; menu_fsm(): _temp
-v___n_8                        EQU 0x0097  ; menu_debug:n
-v____bitbucket_11              EQU 0x0097  ; timer_count_down:_bitbucket
-v__btemp79                     EQU 0x0097  ; timer_count_down:_btemp79-->_bitbucket11:1
-v__btemp80                     EQU 0x0097  ; timer_count_down:_btemp80-->_bitbucket11:2
-v__btemp81                     EQU 0x0097  ; timer_count_down:_btemp81-->_bitbucket11:3
-v__btemp82                     EQU 0x0097  ; timer_count_down:_btemp82-->_bitbucket11:4
-v__btemp83                     EQU 0x0097  ; timer_count_down:_btemp83-->_bitbucket11:5
-v___x_124                      EQU 0x0f8c  ; lcd_init:x-->latd:6
+v___vcfg_shadow_2              EQU 0x0096  ; vcfg_shadow
+v___state_13                   EQU 0x0096  ; state
+v___s_3                        EQU 0x0096  ; s-->state13
+v___state_14                   EQU 0x0096  ; state
+v___s_4                        EQU 0x0096  ; s-->state14
+v___state_15                   EQU 0x0096  ; state
+v___s_5                        EQU 0x0096  ; s-->state15
+v____temp_94                   EQU 0x0096  ; _temp
+v____btemp125_1                EQU 0x008d  ; _btemp125-->_bitbucket:34
+v____btemp126_1                EQU 0x008d  ; _btemp126-->_bitbucket:35
+v____btemp127_1                EQU 0x008d  ; _btemp127-->_bitbucket:36
+v____temp_93                   EQU 0       ; menu_fsm(): _temp
+v____temp_92                   EQU 0       ; menu_debug(): _temp
+v___n_8                        EQU 0x0098  ; menu_debug:n
+v____bitbucket_11              EQU 0x0098  ; timer_count_down:_bitbucket
+v__btemp84                     EQU 0x0098  ; timer_count_down:_btemp84-->_bitbucket11:1
+v__btemp85                     EQU 0x0098  ; timer_count_down:_btemp85-->_bitbucket11:2
+v__btemp86                     EQU 0x0098  ; timer_count_down:_btemp86-->_bitbucket11:3
+v__btemp87                     EQU 0x0098  ; timer_count_down:_btemp87-->_bitbucket11:4
+v__btemp88                     EQU 0x0098  ; timer_count_down:_btemp88-->_bitbucket11:5
+v___shift_2                    EQU 0x009c  ; getphi:shift
+v___freq_4                     EQU 0x00a1  ; getphi:freq
+v____temp_90                   EQU 0x00ab  ; getphi:_temp
+v_t                            EQU 0x00b3  ; getphi:t
+v_result                       EQU 0x00bc  ; getphi:result
+v___x_123                      EQU 0x0f8b  ; turn_off:x-->latc:2
+v___x_124                      EQU 0x0f8c  ; turn_off:x-->latd:5
+v___x_122                      EQU 0x0f8c  ; lcd_init:x-->latd:6
 v___str_3                      EQU 0       ; lcd_define(): str
 v____temp_87                   EQU 0       ; lcd_progress(): _temp
 v____temp_86                   EQU 0       ; lcd_clear_line(): _temp
-v___line_3                     EQU 0x009b  ; lcd_cursor_position:line
-v___pos_1                      EQU 0x009e  ; lcd_cursor_position:pos
-v____temp_84                   EQU 0x00a0  ; lcd_cursor_position:_temp
+v___line_3                     EQU 0x009c  ; lcd_cursor_position:line
+v___pos_1                      EQU 0x009f  ; lcd_cursor_position:pos
+v____temp_84                   EQU 0x00a1  ; lcd_cursor_position:_temp
 v___data_65                    EQU 0x003b  ; _lcd_put:data
-v____temp_83                   EQU 0x00a6  ; _lcd_restore_cursor:_temp
-v___line_1                     EQU 0x00a6  ; _lcd_line2index:line
-v___value_7                    EQU 0x00aa  ; _lcd_write_command:value
-v___x_123                      EQU 0x0f8c  ; _lcd_write_command:x-->latd:6
+v____temp_83                   EQU 0x00a7  ; _lcd_restore_cursor:_temp
+v___line_1                     EQU 0x00a7  ; _lcd_line2index:line
+v___value_7                    EQU 0x00ab  ; _lcd_write_command:value
+v___x_121                      EQU 0x0f8c  ; _lcd_write_command:x-->latd:6
 v___value_5                    EQU 0x003c  ; _lcd_write_data:value
-v___x_122                      EQU 0x0f8c  ; _lcd_write_data:x-->latd:6
+v___x_120                      EQU 0x0f8c  ; _lcd_write_data:x-->latd:6
 v___value_3                    EQU 0x003d  ; __lcd_write:value
 v____temp_82                   EQU 0x003e  ; __lcd_write:_temp
 v___value_1                    EQU 0x003f  ; __lcd_write_nibble:value
@@ -197,75 +207,73 @@ v_bit0                         EQU 0x003f  ; __lcd_write_nibble:bit0-->value1:0
 v_bit1                         EQU 0x003f  ; __lcd_write_nibble:bit1-->value1:1
 v_bit2                         EQU 0x003f  ; __lcd_write_nibble:bit2-->value1:2
 v_bit3                         EQU 0x003f  ; __lcd_write_nibble:bit3-->value1:3
-v___x_116                      EQU 0x0f8c  ; __lcd_write_nibble:x-->latd:0
-v___x_117                      EQU 0x0f8c  ; __lcd_write_nibble:x-->latd:1
-v___x_118                      EQU 0x0f8c  ; __lcd_write_nibble:x-->latd:2
-v___x_119                      EQU 0x0f8c  ; __lcd_write_nibble:x-->latd:3
-v___x_120                      EQU 0x0f8c  ; __lcd_write_nibble:x-->latd:7
-v___x_121                      EQU 0x0f8c  ; __lcd_write_nibble:x-->latd:7
-v___x_114                      EQU 0x0f8b  ; turn_off:x-->latc:2
-v___x_115                      EQU 0x0f8c  ; turn_off:x-->latd:5
-v___percent_1                  EQU 0x0097  ; pwm1_set_dutycycle_percent:percent
-v___steps_8                    EQU 0x009b  ; pwm1_set_dutycycle_percent:steps
-v____temp_75                   EQU 0x00a0  ; pwm1_set_dutycycle_percent:_temp
-v___steps_1                    EQU 0x00b2  ; _pwm1_set_dutycycle_highres:steps
-v___freq_2                     EQU 0x0097  ; pwm_set_frequency:freq
-v____temp_71                   EQU 0x00a6  ; pwm_set_frequency:_temp
-v_pr2_provisional              EQU 0x00ae  ; pwm_set_frequency:pr2_provisional
-v__btemp45                     EQU 0x00b1  ; pwm_set_frequency:_btemp45-->_bitbucket55:0
-v__btemp46                     EQU 0x00b1  ; pwm_set_frequency:_btemp46-->_bitbucket55:1
-v__btemp47                     EQU 0x00b1  ; pwm_set_frequency:_btemp47-->_bitbucket55:2
-v____bitbucket_55              EQU 0x00b1  ; pwm_set_frequency:_bitbucket
-v___prescaler_1                EQU 0x0097  ; pwm_max_resolution:prescaler
+v___x_114                      EQU 0x0f8c  ; __lcd_write_nibble:x-->latd:0
+v___x_115                      EQU 0x0f8c  ; __lcd_write_nibble:x-->latd:1
+v___x_116                      EQU 0x0f8c  ; __lcd_write_nibble:x-->latd:2
+v___x_117                      EQU 0x0f8c  ; __lcd_write_nibble:x-->latd:3
+v___x_118                      EQU 0x0f8c  ; __lcd_write_nibble:x-->latd:7
+v___x_119                      EQU 0x0f8c  ; __lcd_write_nibble:x-->latd:7
+v___percent_1                  EQU 0x0098  ; pwm1_set_dutycycle_percent:percent
+v___steps_8                    EQU 0x009c  ; pwm1_set_dutycycle_percent:steps
+v____temp_75                   EQU 0x00a1  ; pwm1_set_dutycycle_percent:_temp
+v___steps_1                    EQU 0x00b3  ; _pwm1_set_dutycycle_highres:steps
+v___freq_2                     EQU 0x0098  ; pwm_set_frequency:freq
+v____temp_71                   EQU 0x00a7  ; pwm_set_frequency:_temp
+v_pr2_provisional              EQU 0x00af  ; pwm_set_frequency:pr2_provisional
+v__btemp45                     EQU 0x00b2  ; pwm_set_frequency:_btemp45-->_bitbucket57:0
+v__btemp46                     EQU 0x00b2  ; pwm_set_frequency:_btemp46-->_bitbucket57:1
+v__btemp47                     EQU 0x00b2  ; pwm_set_frequency:_btemp47-->_bitbucket57:2
+v____bitbucket_57              EQU 0x00b2  ; pwm_set_frequency:_bitbucket
+v___prescaler_1                EQU 0x0098  ; pwm_max_resolution:prescaler
 v___adc_word_1                 EQU 0       ; adc_read_bytes(): adc_word
 v____temp_64                   EQU 0       ; adc_read_bytes(): _temp
 v____temp_61                   EQU 0       ; adc_read_low_res(): _temp
 v_adc_word                     EQU 0       ; _adc_read(): adc_word
 v___state_12                   EQU 0       ; debounce_fast(): state
-v___polled_1                   EQU 0x00a0  ; debounce:polled-->_bitbucket71:0
-v___state_10                   EQU 0x0097  ; debounce:state
-v___s_1                        EQU 0x0097  ; debounce:s-->state10
-v___counter_1                  EQU 0x0098  ; debounce:counter-->s1+1
-v___just_changed_1             EQU 0x0097  ; debounce:just_changed-->state10:1
-v___stable_1                   EQU 0x0097  ; debounce:stable-->state10:0
-v____temp_59                   EQU 0x009e  ; debounce:_temp
-v____bitbucket_71              EQU 0x00a0  ; debounce:_bitbucket
+v___polled_1                   EQU 0x00a1  ; debounce:polled-->_bitbucket73:0
+v___state_10                   EQU 0x0098  ; debounce:state
+v___s_1                        EQU 0x0098  ; debounce:s-->state10
+v___counter_1                  EQU 0x0099  ; debounce:counter-->s1+1
+v___just_changed_1             EQU 0x0098  ; debounce:just_changed-->state10:1
+v___stable_1                   EQU 0x0098  ; debounce:stable-->state10:0
+v____temp_59                   EQU 0x009f  ; debounce:_temp
+v____bitbucket_73              EQU 0x00a1  ; debounce:_bitbucket
 v___state_8                    EQU 0       ; debounce_init(): state
-v___n_5                        EQU 0x0097  ; delay_100ms:n
-v__floop10                     EQU 0x009e  ; delay_100ms:_floop10
-v__floop11                     EQU 0x00a6  ; delay_100ms:_floop11
-v___n_3                        EQU 0x0097  ; delay_1ms:n
-v__floop8                      EQU 0x009e  ; delay_1ms:_floop8
-v__floop9                      EQU 0x00a6  ; delay_1ms:_floop9
+v___n_5                        EQU 0x0098  ; delay_100ms:n
+v__floop10                     EQU 0x009f  ; delay_100ms:_floop10
+v__floop11                     EQU 0x00a7  ; delay_100ms:_floop11
+v___n_3                        EQU 0x0098  ; delay_1ms:n
+v__floop8                      EQU 0x009f  ; delay_1ms:_floop8
+v__floop9                      EQU 0x00a7  ; delay_1ms:_floop9
 v___n_1                        EQU 0x0040  ; delay_10us:n
 v__floop6                      EQU 0x0041  ; delay_10us:_floop6
 v__floop7                      EQU 0x0042  ; delay_10us:_floop7
-v____device_put_32             EQU 0x009b  ; print_byte_dec:_device_put
-v___data_59                    EQU 0x00a6  ; print_byte_dec:data
-v____temp_53                   EQU 0x00aa  ; print_byte_dec:_temp
-v____device_put_28             EQU 0x009b  ; print_dword_dec:_device_put
-v___data_51                    EQU 0x00a6  ; print_dword_dec:data
-v____device_put_26             EQU 0x00b2  ; print_maxvar_dec:_device_put
-v___data_47                    EQU 0x00b6  ; print_maxvar_dec:data
-v_counter                      EQU 0x00ba  ; print_maxvar_dec:counter
-v_digit                        EQU 0x00bc  ; print_maxvar_dec:digit
-v__btemp22                     EQU 0x00bd  ; print_maxvar_dec:_btemp22-->_bitbucket97:0
-v__btemp23                     EQU 0x00bd  ; print_maxvar_dec:_btemp23-->_bitbucket97:1
-v__btemp24                     EQU 0x00bd  ; print_maxvar_dec:_btemp24-->_bitbucket97:2
-v____bitbucket_97              EQU 0x00bd  ; print_maxvar_dec:_bitbucket
-v__floop4                      EQU 0x00be  ; print_maxvar_dec:_floop4
-v__floop5                      EQU 0x00c0  ; print_maxvar_dec:_floop5
-v_temp                         EQU 0x00c2  ; _make_tenfold_divisor:temp
+v____device_put_32             EQU 0x009c  ; print_byte_dec:_device_put
+v___data_59                    EQU 0x00a7  ; print_byte_dec:data
+v____temp_53                   EQU 0x00ab  ; print_byte_dec:_temp
+v____device_put_28             EQU 0x009c  ; print_dword_dec:_device_put
+v___data_51                    EQU 0x00a7  ; print_dword_dec:data
+v____device_put_26             EQU 0x00b3  ; print_maxvar_dec:_device_put
+v___data_47                    EQU 0x00b8  ; print_maxvar_dec:data
+v_counter                      EQU 0x00be  ; print_maxvar_dec:counter
+v_digit                        EQU 0x00c0  ; print_maxvar_dec:digit
+v__btemp22                     EQU 0x00c1  ; print_maxvar_dec:_btemp22-->_bitbucket99:0
+v__btemp23                     EQU 0x00c1  ; print_maxvar_dec:_btemp23-->_bitbucket99:1
+v__btemp24                     EQU 0x00c1  ; print_maxvar_dec:_btemp24-->_bitbucket99:2
+v____bitbucket_99              EQU 0x00c1  ; print_maxvar_dec:_bitbucket
+v__floop4                      EQU 0x00c2  ; print_maxvar_dec:_floop4
+v__floop5                      EQU 0x00c4  ; print_maxvar_dec:_floop5
+v_temp                         EQU 0x00c6  ; _make_tenfold_divisor:temp
 v___data_43                    EQU 0       ; print_dword_hex(): data
 v___data_39                    EQU 0       ; print_word_hex(): data
 v___data_29                    EQU 0       ; print_dword_bin(): data
 v___data_23                    EQU 0       ; print_word_bin(): data
-v____device_put_2              EQU 0x009b  ; print_string:_device_put
-v__str_count                   EQU 0x00a6  ; print_string:_str_count
-v___str_1                      EQU 0x00ae  ; print_string:str
-v_len                          EQU 0x00b2  ; print_string:len
-v_i                            EQU 0x00b5  ; print_string:i
-v__floop1                      EQU 0x00b6  ; print_string:_floop1
+v____device_put_2              EQU 0x009c  ; print_string:_device_put
+v__str_count                   EQU 0x00a7  ; print_string:_str_count
+v___str_1                      EQU 0x00af  ; print_string:str
+v_len                          EQU 0x00b3  ; print_string:len
+v_i                            EQU 0x00b7  ; print_string:i
+v__floop1                      EQU 0x00b8  ; print_string:_floop1
 ;   25 include 18f4550
                                org      0
                                goto     l__main
@@ -372,7 +380,7 @@ l__pic_divide
                                clrf     v__pic_remainder+1,v__access
                                clrf     v__pic_remainder+2,v__access
                                clrf     v__pic_remainder+3,v__access
-l__l1221
+l__l1231
                                bcf      v__status, v__c,v__access
                                rlcf     v__pic_quotient,f,v__access
                                rlcf     v__pic_quotient+1,f,v__access
@@ -390,23 +398,23 @@ l__l1221
                                movf     v__pic_remainder+3,w,v__access
                                subwf    v__pic_divisor+3,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1224
+                               goto     l__l1234
                                movf     v__pic_remainder+2,w,v__access
                                subwf    v__pic_divisor+2,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1224
+                               goto     l__l1234
                                movf     v__pic_remainder+1,w,v__access
                                subwf    v__pic_divisor+1,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1224
+                               goto     l__l1234
                                movf     v__pic_remainder,w,v__access
                                subwf    v__pic_divisor,w,v__access
-l__l1224
+l__l1234
                                btfsc    v__status, v__z,v__access
-                               goto     l__l1223
+                               goto     l__l1233
                                btfsc    v__status, v__c,v__access
-                               goto     l__l1222
-l__l1223
+                               goto     l__l1232
+l__l1233
                                bsf      v__status, v__c,v__access
                                movf     v__pic_remainder,w,v__access
                                subfwb   v__pic_divisor,w,v__access
@@ -421,22 +429,22 @@ l__l1223
                                subfwb   v__pic_divisor+3,w,v__access
                                movwf    v__pic_remainder+3,v__access
                                bsf      v__pic_quotient, 0,v__access
-l__l1222
+l__l1232
                                decfsz   v__pic_loop,f,v__access
-                               goto     l__l1221
+                               goto     l__l1231
                                return   
 l__pic_pointer_read
                                btfsc    v__pic_pointer+2, 7,v__access
-                               goto     l__l1225
+                               goto     l__l1235
                                btfsc    v__pic_pointer+2, 6,v__access
-                               goto     l__l1226
+                               goto     l__l1236
                                movf     v__pic_pointer+1,w,v__access
                                movwf    v__fsr0h,v__access
                                movf     v__pic_pointer,w,v__access
                                movwf    v__fsr0l,v__access
                                movf     v__ind,w,v__access
                                return   
-l__l1226
+l__l1236
                                movf     v__pic_pointer,w,v__access
                                movwf    v__tblptr,v__access
                                movf     v__pic_pointer+1,w,v__access
@@ -447,7 +455,7 @@ l__l1226
                                tblrd    *
                                movf     v__tablat,w,v__access
                                return   
-l__l1225
+l__l1235
                                return   
 l__pic_indirect
                                movwf    v__pclatu,v__access
@@ -585,40 +593,40 @@ l__l276
                                movf     v__print_dec_divisor+3,w,v__access
                                subwf    v___data_47+3,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1227
+                               goto     l__l1237
                                movf     v__print_dec_divisor+2,w,v__access
                                subwf    v___data_47+2,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1227
+                               goto     l__l1237
                                movf     v__print_dec_divisor+1,w,v__access
                                subwf    v___data_47+1,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1227
+                               goto     l__l1237
                                movf     v__print_dec_divisor,w,v__access
                                subwf    v___data_47,w,v__banked
-l__l1227
-                               bcf      v____bitbucket_97, 0,v__banked ; _btemp22
+l__l1237
+                               bcf      v____bitbucket_99, 0,v__banked ; _btemp22
                                btfss    v__status, v__z,v__access
                                btfsc    v__status, v__c,v__access
-                               bsf      v____bitbucket_97, 0,v__banked ; _btemp22
+                               bsf      v____bitbucket_99, 0,v__banked ; _btemp22
                                movlw    0
                                subwf    v_counter+1,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1228
+                               goto     l__l1238
                                movlw    10
                                subwf    v_counter,w,v__banked
-l__l1228
-                               bcf      v____bitbucket_97, 1,v__banked ; _btemp23
+l__l1238
+                               bcf      v____bitbucket_99, 1,v__banked ; _btemp23
                                btfsc    v__status, v__z,v__access
-                               goto     l__l1229
+                               goto     l__l1239
                                btfss    v__status, v__c,v__access
-                               bsf      v____bitbucket_97, 1,v__banked ; _btemp23
-l__l1229
-                               bsf      v____bitbucket_97, 2,v__banked ; _btemp24
-                               btfsc    v____bitbucket_97, 0,v__banked ; _btemp22
-                               btfss    v____bitbucket_97, 1,v__banked ; _btemp23
-                               bcf      v____bitbucket_97, 2,v__banked ; _btemp24
-                               btfss    v____bitbucket_97, 2,v__banked ; _btemp24
+                               bsf      v____bitbucket_99, 1,v__banked ; _btemp23
+l__l1239
+                               bsf      v____bitbucket_99, 2,v__banked ; _btemp24
+                               btfsc    v____bitbucket_99, 0,v__banked ; _btemp22
+                               btfss    v____bitbucket_99, 1,v__banked ; _btemp23
+                               bcf      v____bitbucket_99, 2,v__banked ; _btemp24
+                               btfss    v____bitbucket_99, 2,v__banked ; _btemp24
                                goto     l__l277
 ;  497      _make_tenfold_divisor()                       -- * 10
                                call     l__make_tenfold_divisor
@@ -687,23 +695,23 @@ l__l286
                                movf     v___data_47+3,w,v__banked
                                subwf    v__print_dec_divisor+3,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1232
+                               goto     l__l1242
                                movf     v___data_47+2,w,v__banked
                                subwf    v__print_dec_divisor+2,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1232
+                               goto     l__l1242
                                movf     v___data_47+1,w,v__banked
                                subwf    v__print_dec_divisor+1,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1232
+                               goto     l__l1242
                                movf     v___data_47,w,v__banked
                                subwf    v__print_dec_divisor,w,v__access
-l__l1232
+l__l1242
                                btfsc    v__status, v__z,v__access
-                               goto     l__l1233
+                               goto     l__l1243
                                btfsc    v__status, v__c,v__access
                                goto     l__l287
-l__l1233
+l__l1243
 ;  511         data = data - _print_dec_divisor
                                bsf      v__status, v__c,v__access
                                movf     v___data_47,w,v__banked
@@ -801,9 +809,9 @@ l__l332
                                movlb    0
                                movlw    10
                                movwf    v__pic_temp,v__access
-l__l1234
+l__l1244
                                decfsz   v__pic_temp,f,v__access
-                               goto     l__l1234
+                               goto     l__l1244
                                nop      
                                nop      
 ;   90      end if
@@ -816,9 +824,9 @@ l__l333
                                movlb    0
                                movlw    7
                                movwf    v__pic_temp,v__access
-l__l1235
+l__l1245
                                decfsz   v__pic_temp,f,v__access
-                               goto     l__l1235
+                               goto     l__l1245
                                nop      
 ;  101       for n loop
                                movf     v___n_1,w,v__access
@@ -830,9 +838,9 @@ l__l338
                                movlb    0
                                movlw    14
                                movwf    v__pic_temp,v__access
-l__l1236
+l__l1246
                                decfsz   v__pic_temp,f,v__access
-                               goto     l__l1236
+                               goto     l__l1246
 ;  107       end loop
                                incf     v__floop7,f,v__access
 l__l339
@@ -860,14 +868,14 @@ l__l345
                                movlb    0
                                movlw    9
                                movwf    v__pic_temp,v__access
-l__l1237
+l__l1247
                                movlw    183
                                movwf    v__pic_temp+1,v__access
-l__l1238
+l__l1248
                                decfsz   v__pic_temp+1,f,v__access
-                               goto     l__l1238
+                               goto     l__l1248
                                decfsz   v__pic_temp,f,v__access
-                               goto     l__l1237
+                               goto     l__l1247
                                nop      
 ;  121    end loop
                                incf     v__floop9,f,v__banked
@@ -899,19 +907,19 @@ l__l352
                                movlb    0
                                movlw    17
                                movwf    v__pic_temp,v__access
-l__l1239
+l__l1249
                                movlw    87
                                movwf    v__pic_temp+1,v__access
-l__l1240
+l__l1250
                                movlw    111
                                movwf    v__pic_temp+2,v__access
-l__l1241
+l__l1251
                                decfsz   v__pic_temp+2,f,v__access
-                               goto     l__l1241
+                               goto     l__l1251
                                decfsz   v__pic_temp+1,f,v__access
-                               goto     l__l1240
+                               goto     l__l1250
                                decfsz   v__pic_temp,f,v__access
-                               goto     l__l1239
+                               goto     l__l1249
 ;  129    end loop
                                incf     v__floop11,f,v__banked
                                btfsc    v__status, v__z,v__access
@@ -934,16 +942,16 @@ l_debounce
                                bcf      v___state_10, 1,v__banked ; just_changed1
 ;  168    if (polled == stable) then
                                bsf      v__status, v__z,v__access
-                               btfss    v____bitbucket_71, 0,v__banked ; polled1
-                               goto     l__l1242
+                               btfss    v____bitbucket_73, 0,v__banked ; polled1
+                               goto     l__l1252
                                btfss    v___state_10, 0,v__banked ; stable1
-                               goto     l__l1243
-                               goto     l__l1245
-l__l1242
+                               goto     l__l1253
+                               goto     l__l1255
+l__l1252
                                btfsc    v___state_10, 0,v__banked ; stable1
-l__l1243
+l__l1253
                                bcf      v__status, v__z,v__access
-l__l1245
+l__l1255
                                btfss    v__status, v__z,v__access
                                goto     l__l373
 ;  170       counter = s[0] | 3
@@ -961,7 +969,7 @@ l__l373
                                goto     l__l375
 ;  179          stable = polled
                                bcf      v___state_10, 0,v__banked ; stable1
-                               btfsc    v____bitbucket_71, 0,v__banked ; polled1
+                               btfsc    v____bitbucket_73, 0,v__banked ; polled1
                                bsf      v___state_10, 0,v__banked ; stable1
 ;  180          counter = s[0] | 3
                                movlw    3
@@ -1104,6 +1112,8 @@ l__l376
 ;  131 var byte duty = 50  -- Duty cicle percent
                                movlw    50
                                movwf    v_duty,v__access
+;  132 var byte phi = 0
+                               clrf     v_phi,v__access
 ;  133 var word shift = 0 -- Time phase shift
                                clrf     v_shift,v__access
                                clrf     v_shift+1,v__access
@@ -1125,13 +1135,13 @@ l__l376
                                movwf    v_timer_ms,v__access
 ;  145 var byte timer_hs = 0
                                clrf     v_timer_hs,v__access
-;  148 var bit count_flag = Off
+;  154 var bit count_flag = Off
                                bcf      v__bitbucket, 1,v__banked ; count_flag
-;  150 var bit update = true    -- Update screen!
+;  156 var bit update = true    -- Update screen!
                                bsf      v__bitbucket, 2,v__banked ; update
-;  151 var bit timer_en = false -- Enable/Disable count down
+;  157 var bit timer_en = false -- Enable/Disable count down
                                bcf      v__bitbucket, 3,v__banked ; timer_en
-;  155 var word b1_st = debounce_init(THRESHOLD) -- Debounce
+;  162 var word b1_st = debounce_init(THRESHOLD) -- Debounce
 ; /home/balibrea/jallibws/lib/debounce.jal
 ;  150    s[0] = threshold & 0xFC
                                movlw    48
@@ -1146,12 +1156,12 @@ l__l376
                                movf     v___state_13+1,w,v__banked
                                movwf    v____temp_65+1,v__access
 ; main_ind4550.jal
-;  155 var word b1_st = debounce_init(THRESHOLD) -- Debounce
+;  162 var word b1_st = debounce_init(THRESHOLD) -- Debounce
                                movf     v____temp_65,w,v__access
                                movwf    v_b1_st,v__access
                                movf     v____temp_65+1,w,v__access
                                movwf    v_b1_st+1,v__access
-;  156 var word b2_st = debounce_init(THRESHOLD)
+;  163 var word b2_st = debounce_init(THRESHOLD)
 ; /home/balibrea/jallibws/lib/debounce.jal
 ;  150    s[0] = threshold & 0xFC
                                movlw    48
@@ -1166,12 +1176,12 @@ l__l376
                                movf     v___state_14+1,w,v__banked
                                movwf    v____temp_65+1,v__access
 ; main_ind4550.jal
-;  156 var word b2_st = debounce_init(THRESHOLD)
+;  163 var word b2_st = debounce_init(THRESHOLD)
                                movf     v____temp_65,w,v__access
                                movwf    v_b2_st,v__access
                                movf     v____temp_65+1,w,v__access
                                movwf    v_b2_st+1,v__access
-;  157 var word b3_st = debounce_init(THRESHOLD)
+;  164 var word b3_st = debounce_init(THRESHOLD)
 ; /home/balibrea/jallibws/lib/debounce.jal
 ;  150    s[0] = threshold & 0xFC
                                movlw    48
@@ -1186,14 +1196,14 @@ l__l376
                                movf     v___state_15+1,w,v__banked
                                movwf    v____temp_65+1,v__access
 ; main_ind4550.jal
-;  157 var word b3_st = debounce_init(THRESHOLD)
+;  164 var word b3_st = debounce_init(THRESHOLD)
                                movf     v____temp_65,w,v__access
                                movwf    v_b3_st,v__banked
                                movf     v____temp_65+1,w,v__access
                                movwf    v_b3_st+1,v__banked
-;  160 var byte debug_index = 0
+;  167 var byte debug_index = 0
                                clrf     v_debug_index,v__banked
-;  161 var bit debug_flag = OFF
+;  168 var bit debug_flag = OFF
                                bcf      v__bitbucket, 4,v__banked ; debug_flag
 ; /home/balibrea/jallibws/lib/pwm_common.jal
 ;   31 var volatile word _pr2_shadow_plus1 = 256          -- value(PR2) + 1
@@ -1295,39 +1305,39 @@ l_pwm_set_frequency
 ;  126    if ( (pr2_provisional > 0)  &                   -- requested PWM freq not too high and
                                movf     v_pr2_provisional,w,v__banked
                                iorwf    v_pr2_provisional+1,w,v__banked
-                               bsf      v____bitbucket_55, 0,v__banked ; _btemp45
+                               bsf      v____bitbucket_57, 0,v__banked ; _btemp45
                                btfsc    v__status, v__z,v__access
-                               bcf      v____bitbucket_55, 0,v__banked ; _btemp45
+                               bcf      v____bitbucket_57, 0,v__banked ; _btemp45
                                movlw    16
                                subwf    v_pr2_provisional+1,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1246
+                               goto     l__l1256
                                movlw    0
                                subwf    v_pr2_provisional,w,v__banked
-l__l1246
-                               bcf      v____bitbucket_55, 1,v__banked ; _btemp46
+l__l1256
+                               bcf      v____bitbucket_57, 1,v__banked ; _btemp46
                                btfss    v__status, v__z,v__access
                                btfss    v__status, v__c,v__access
-                               bsf      v____bitbucket_55, 1,v__banked ; _btemp46
-                               bsf      v____bitbucket_55, 2,v__banked ; _btemp47
-                               btfsc    v____bitbucket_55, 0,v__banked ; _btemp45
-                               btfss    v____bitbucket_55, 1,v__banked ; _btemp46
-                               bcf      v____bitbucket_55, 2,v__banked ; _btemp47
-                               btfss    v____bitbucket_55, 2,v__banked ; _btemp47
+                               bsf      v____bitbucket_57, 1,v__banked ; _btemp46
+                               bsf      v____bitbucket_57, 2,v__banked ; _btemp47
+                               btfsc    v____bitbucket_57, 0,v__banked ; _btemp45
+                               btfss    v____bitbucket_57, 1,v__banked ; _btemp46
+                               bcf      v____bitbucket_57, 2,v__banked ; _btemp47
+                               btfss    v____bitbucket_57, 2,v__banked ; _btemp47
                                goto     l__l632
 ;  128       if (pr2_provisional <= 256) then
                                movlw    1
                                subwf    v_pr2_provisional+1,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1249
+                               goto     l__l1259
                                movlw    0
                                subwf    v_pr2_provisional,w,v__banked
-l__l1249
+l__l1259
                                btfsc    v__status, v__z,v__access
-                               goto     l__l1250
+                               goto     l__l1260
                                btfsc    v__status, v__c,v__access
                                goto     l__l634
-l__l1250
+l__l1260
 ;  129          _pr2_shadow_plus1 = pr2_provisional
                                movf     v_pr2_provisional,w,v__banked
                                movwf    v__pr2_shadow_plus1,v__access
@@ -1342,15 +1352,15 @@ l__l634
                                movlw    4
                                subwf    v_pr2_provisional+1,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1251
+                               goto     l__l1261
                                movlw    0
                                subwf    v_pr2_provisional,w,v__banked
-l__l1251
+l__l1261
                                btfsc    v__status, v__z,v__access
-                               goto     l__l1252
+                               goto     l__l1262
                                btfsc    v__status, v__c,v__access
                                goto     l__l635
-l__l1252
+l__l1262
 ;  132          _pr2_shadow_plus1 = pr2_provisional / 4
                                bcf      v__status, v__c,v__access
                                rrcf     v_pr2_provisional+1,w,v__banked
@@ -1376,12 +1386,12 @@ l__l635
                                movwf    v__pr2_shadow_plus1,v__access
                                movlw    3
                                movwf    v__pic_temp,v__access
-l__l1253
+l__l1263
                                bcf      v__status, v__c,v__access
                                rrcf     v__pr2_shadow_plus1+1,f,v__access
                                rrcf     v__pr2_shadow_plus1,f,v__access
                                decfsz   v__pic_temp,f,v__access
-                               goto     l__l1253
+                               goto     l__l1263
 ;  136          T2CON_T2CKPS = 0b10                       -- 1:16
                                movlw    252
                                andwf    v_t2con,w,v__access
@@ -1438,10 +1448,10 @@ l__pwm1_set_dutycycle_highres
                                movlw    3
                                subwf    v___steps_1+1,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1254
+                               goto     l__l1264
                                movlw    255
                                subwf    v___steps_1,w,v__banked
-l__l1254
+l__l1264
                                btfsc    v__status, v__z,v__access
                                goto     l__l645
                                btfss    v__status, v__c,v__access
@@ -1496,10 +1506,10 @@ l__l655
                                movlw    100
                                subwf    v___percent_1,w,v__banked
                                btfsc    v__status, v__z,v__access
-                               goto     l__l1257
+                               goto     l__l1267
                                btfss    v__status, v__c,v__access
                                goto     l__l656
-l__l1257
+l__l1267
 ;  148      steps = _pr2_shadow_plus1 - 1
                                movf     v__pr2_shadow_plus1+1,w,v__access
                                movwf    v___steps_8+1,v__banked
@@ -1577,10 +1587,10 @@ l__l636
 ; /home/balibrea/jallibws/lib/pwm_ccp2.jal
 ;   29 var byte   _ccpr2l_shadow  = 0                           -- 8 MSbits of duty cycle
 ; main_ind4550.jal
-;  167 pwm_max_resolution(1)
+;  175 pwm_max_resolution(1)
                                movlw    1
                                call     l_pwm_max_resolution
-;  169 pwm_set_frequency(25000)
+;  177 pwm_set_frequency(25000)
                                movlw    168
                                movlb    0
                                movwf    v___freq_2,v__banked
@@ -1589,139 +1599,98 @@ l__l636
                                clrf     v___freq_2+2,v__banked
                                clrf     v___freq_2+3,v__banked
                                call     l_pwm_set_frequency
-;  170 pwm1_set_dutycycle_percent(50)
+;  178 pwm1_set_dutycycle_percent(50)
                                movlw    50
                                call     l_pwm1_set_dutycycle_percent
-;  171 pwm1_off()
+;  179 pwm1_off()
                                call     l_pwm1_off
-;  175 procedure set_pwm_config() is
-                               goto     l__l711
-;  184 procedure turn_on() is
-l_turn_on
-;  185     if debug_flag then
-                               btfss    v__bitbucket, 4,v__banked ; debug_flag
-                               goto     l__l709
-;  186         freq = debug_freq
-                               movf     v_debug_freq,w,v__access
-                               movwf    v_freq,v__access
-                               movf     v_debug_freq+1,w,v__access
-                               movwf    v_freq+1,v__access
-                               movf     v_debug_freq+2,w,v__access
-                               movwf    v_freq+2,v__access
-                               movf     v_debug_freq+3,w,v__access
-                               movwf    v_freq+3,v__access
-;  187     end if
-l__l709
-;  189     pwm_set_frequency(freq)
-                               movf     v_freq,w,v__access
-                               movwf    v___freq_2,v__banked
-                               movf     v_freq+1,w,v__access
-                               movwf    v___freq_2+1,v__banked
-                               movf     v_freq+2,w,v__access
-                               movwf    v___freq_2+2,v__banked
-                               movf     v_freq+3,w,v__access
-                               movwf    v___freq_2+3,v__banked
-                               call     l_pwm_set_frequency
-;  190     pwm1_set_dutycycle_percent(duty)
-                               movf     v_duty,w,v__access
-                               call     l_pwm1_set_dutycycle_percent
-;  191     pwm1_on()
-                               call     l_pwm1_on
-;  193     set_pwm_config()
-                               movlw    240
-                               andwf    v_ccp1con,w,v__access
-                               iorlw    12
-                               movwf    v_ccp1con,v__access
-                               movlw    63
-                               andwf    v_ccp1con,w,v__access
-                               iorlw    128
-                               movwf    v_ccp1con,v__access
-                               movlw    128
-                               andwf    v_eccp1del,w,v__access
-                               iorlw    50
-                               movwf    v_eccp1del,v__access
-                               bsf      v_intcon, 4,v__access ; intcon_int0ie
-                               bcf      v_intcon3, 3,v__access ; intcon3_int1ie
-                               bcf      v_intcon, 1,v__access ; intcon_int0if
-                               bcf      v_intcon3, 0,v__access ; intcon3_int1if
-                               bsf      v_t1con, 0,v__access ; t1con_tmr1on
-                               return   
-l_turn_off
-                               call     l_pwm1_off
-                               bcf      v_latc, 2,v__access ; x114
-                               bcf      v_latd, 5,v__access ; x115
-                               bcf      v_intcon, 4,v__access ; intcon_int0ie
-                               bcf      v_intcon3, 3,v__access ; intcon3_int1ie
-                               bcf      v_t1con, 0,v__access ; t1con_tmr1on
-                               return   
-l__l711
+;  184 T0CON_T0CS = 0   -- internal clock
                                bcf      v_t0con, 5,v__access ; t0con_t0cs
+;  185 T0CON_PSA  = 0   -- assign prescaler to timer0
                                bcf      v_t0con, 3,v__access ; t0con_psa
+;  186 T0CON_T0PS = 7   -- prescaler 1:256
                                movlw    248
                                andwf    v_t0con,w,v__access
                                iorlw    7
                                movwf    v_t0con,v__access
+;  187 T0CON_T08BIT = 0 -- 16bit timer
                                bcf      v_t0con, 6,v__access ; t0con_t08bit
+;  192 TMR0 = 46004    -- Precharge value
                                movlw    180
                                movwf    v_tmr0,v__access
                                movlw    179
                                movwf    v_tmr0+1,v__access
+;  199 T1CON_TMR1CS = 0 -- Use instruction clock (fclk/4)
                                bcf      v_t1con, 1,v__access ; t1con_tmr1cs
+;  200 T1CON_RD16 = 1   -- Use 16bit read/write operations
                                bsf      v_t1con, 7,v__access ; t1con_rd16
+;  201 T1CON_T1CKPS = 0 -- Prescale value 1:1
                                movlw    207
                                andwf    v_t1con,f,v__access
+;  202 TMR1 = 0
                                clrf     v_tmr1,v__access
                                clrf     v_tmr1+1,v__access
+;  209 INTCON2_INTEDG0 = 0 -- enable falling edge detection in INT0
                                bcf      v_intcon2, 6,v__access ; intcon2_intedg0
+;  210 INTCON2_INTEDG1 = 0 -- enable falling edge detection in INT1
                                bcf      v_intcon2, 5,v__access ; intcon2_intedg1
+;  212 INTCON_INT0IF = 0 -- Clear interrupts flags
                                bcf      v_intcon, 1,v__access ; intcon_int0if
+;  213 INTCON3_INT1IF = 0
                                bcf      v_intcon3, 0,v__access ; intcon3_int1if
+;  215 INTCON_GIE  = on    -- Enable global interrupt
                                bsf      v_intcon, 7,v__access ; intcon_gie
+;  226 pin_D6_direction       = output
                                bcf      v_trisd, 6,v__access ; pin_d6_direction
+;  227 pin_D7_direction       = output
                                bcf      v_trisd, 7,v__access ; pin_d7_direction
+;  234 pin_D0_direction       = output
                                bcf      v_trisd, 0,v__access ; pin_d0_direction
+;  235 pin_D1_direction       = output
                                bcf      v_trisd, 1,v__access ; pin_d1_direction
+;  236 pin_D2_direction       = output
                                bcf      v_trisd, 2,v__access ; pin_d2_direction
+;  237 pin_D3_direction       = output
                                bcf      v_trisd, 3,v__access ; pin_d3_direction
 ; /home/balibrea/jallibws/lib/lcd_hd44780_4.jal
 ;   77 procedure __lcd_write_nibble(byte in value) is
-                               goto     l__l729
+                               goto     l__l718
 l___lcd_write_nibble
                                movwf    v___value_1,v__access
 ;   89       lcd_d4 = bit0                             -- )
                                btfsc    v___value_1, 0,v__access ; bit0
-                               goto     l__l1258
-                               bcf      v_latd, 0,v__access ; x116
-                               goto     l__l1259
-l__l1258
-                               bsf      v_latd, 0,v__access ; x116
-l__l1259
+                               goto     l__l1268
+                               bcf      v_latd, 0,v__access ; x114
+                               goto     l__l1269
+l__l1268
+                               bsf      v_latd, 0,v__access ; x114
+l__l1269
 ;   90       lcd_d5 = bit1                             -- )
                                btfsc    v___value_1, 1,v__access ; bit1
-                               goto     l__l1260
-                               bcf      v_latd, 1,v__access ; x117
-                               goto     l__l1261
-l__l1260
-                               bsf      v_latd, 1,v__access ; x117
-l__l1261
+                               goto     l__l1270
+                               bcf      v_latd, 1,v__access ; x115
+                               goto     l__l1271
+l__l1270
+                               bsf      v_latd, 1,v__access ; x115
+l__l1271
 ;   91       lcd_d6 = bit2                             -- ) write databits
                                btfsc    v___value_1, 2,v__access ; bit2
-                               goto     l__l1262
-                               bcf      v_latd, 2,v__access ; x118
-                               goto     l__l1263
-l__l1262
-                               bsf      v_latd, 2,v__access ; x118
-l__l1263
+                               goto     l__l1272
+                               bcf      v_latd, 2,v__access ; x116
+                               goto     l__l1273
+l__l1272
+                               bsf      v_latd, 2,v__access ; x116
+l__l1273
 ;   92       lcd_d7 = bit3                             -- )
                                btfsc    v___value_1, 3,v__access ; bit3
-                               goto     l__l1264
-                               bcf      v_latd, 3,v__access ; x119
-                               goto     l__l1265
-l__l1264
-                               bsf      v_latd, 3,v__access ; x119
-l__l1265
+                               goto     l__l1274
+                               bcf      v_latd, 3,v__access ; x117
+                               goto     l__l1275
+l__l1274
+                               bsf      v_latd, 3,v__access ; x117
+l__l1275
 ;   95    lcd_en = HIGH                                -- trigger on
-                               bsf      v_latd, 7,v__access ; x120
+                               bsf      v_latd, 7,v__access ; x118
 ;   96    _usec_delay(1)                               -- delay (> 400 ns)
                                nop      
                                nop      
@@ -1729,7 +1698,7 @@ l__l1265
                                nop      
                                nop      
 ;   97    lcd_en = LOW                                 -- trigger off
-                               bcf      v_latd, 7,v__access ; x121
+                               bcf      v_latd, 7,v__access ; x119
 ;   99 end procedure
                                return   
 ;  106 procedure __lcd_write(byte in value) is
@@ -1751,7 +1720,7 @@ l___lcd_write
 l__lcd_write_data
                                movwf    v___value_5,v__access
 ;  120    lcd_rs = high                                -- select data mode
-                               bsf      v_latd, 6,v__access ; x122
+                               bsf      v_latd, 6,v__access ; x120
 ;  121    __lcd_write(value)                           -- write byte
                                movf     v___value_5,w,v__access
                                goto     l___lcd_write
@@ -1761,56 +1730,56 @@ l__lcd_write_command
                                movlb    0
                                movwf    v___value_7,v__banked
 ;  132    lcd_rs = low                                 -- select command mode
-                               bcf      v_latd, 6,v__access ; x123
+                               bcf      v_latd, 6,v__access ; x121
 ;  133    __lcd_write(value)                           -- write byte
                                movf     v___value_7,w,v__banked
                                goto     l___lcd_write
 ;  135 end procedure
-l__l729
+l__l718
 ; /home/balibrea/jallibws/lib/lcd_hd44780_common.jal
 ;   38 var volatile byte lcd_pos     = 0
                                clrf     v_lcd_pos,v__access
 ;   43 function _lcd_line2index(byte in line) return byte is
-                               goto     l__l819
+                               goto     l__l808
 l__lcd_line2index
                                movwf    v___line_1,v__banked
 ;   46    if (line >= LCD_ROWS) then
                                movlw    4
                                subwf    v___line_1,w,v__banked
                                btfsc    v__status, v__z,v__access
-                               goto     l__l1267
+                               goto     l__l1277
                                btfss    v__status, v__c,v__access
-                               goto     l__l735
-l__l1267
+                               goto     l__l724
+l__l1277
 ;   47       line = 0
                                clrf     v___line_1,v__banked
 ;   48    end if
-l__l735
+l__l724
 ;   50    case line of
 ;   51       0: return 0x00
                                movf     v___line_1,w,v__banked
                                btfsc    v__status, v__z,v__access
                                retlw    0
-l__l736
+l__l725
 ;   52       1: return 0x40
                                decf     v___line_1,w,v__banked
                                btfsc    v__status, v__z,v__access
                                retlw    64
-l__l739
+l__l728
 ;   53       2: return 0x00 + LCD_CHARS
                                movlw    2
                                subwf    v___line_1,w,v__banked
                                btfsc    v__status, v__z,v__access
                                retlw    20
-l__l741
+l__l730
 ;   54       3: return 0x40 + LCD_CHARS
                                movlw    3
                                subwf    v___line_1,w,v__banked
                                btfsc    v__status, v__z,v__access
                                retlw    84
-l__l743
+l__l732
 ;   57 end function
-l__l733
+l__l722
                                return   
 ;   64 procedure _lcd_restore_cursor() is
 l__lcd_restore_cursor
@@ -1853,7 +1822,7 @@ l_lcd_clear_screen
 ;  144 procedure lcd_init() is
 l_lcd_init
 ;  146    lcd_rs = LOW                                 -- set to control char mode
-                               bcf      v_latd, 6,v__access ; x124
+                               bcf      v_latd, 6,v__access ; x122
 ;  147    delay_1ms(25)                                -- power-up delay (> 15 ms)
                                movlw    25
                                movlb    0
@@ -1902,11 +1871,11 @@ l_lcd_init
 ;  161    lcd_clear_screen()                           -- clear display
                                goto     l_lcd_clear_screen
 ;  163 end procedure
-l__l819
+l__l808
 ; main_ind4550.jal
-;  290 lcd_init()                            -- init the lcd controller
+;  242 lcd_init()                            -- init the lcd controller
                                call     l_lcd_init
-;  292 var byte line1[LCD_CHARS] = "Mi Cocina de Inducc "
+;  244 var byte line1[LCD_CHARS] = "Mi Cocina de Inducc "
                                movlw    77
                                movlb    0
                                movwf    v_line1,v__banked
@@ -1947,9 +1916,9 @@ l__l819
                                movwf    v_line1+18,v__banked
                                movlw    32
                                movwf    v_line1+19,v__banked
-;  296 lcd_clear_screen()
+;  248 lcd_clear_screen()
                                call     l_lcd_clear_screen
-;  297 print_string(lcd, line1)
+;  249 print_string(lcd, line1)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -1965,157 +1934,239 @@ l__l819
                                clrf     v___str_1+1,v__banked
                                clrf     v___str_1+2,v__banked
                                call     l_print_string
-;  299 delay_100ms(10)
+;  251 delay_100ms(10)
                                movlw    10
                                movlb    0
                                movwf    v___n_5,v__banked
                                clrf     v___n_5+1,v__banked
                                call     l_delay_100ms
-;  300 lcd_clear_screen()
+;  252 lcd_clear_screen()
                                call     l_lcd_clear_screen
-;  305 procedure timer_count_down() is
-                               goto     l__l865
+;  259 procedure set_pwm_config() is
+                               goto     l__l875
+;  268 procedure turn_on() is
+l_turn_on
+;  269     if debug_flag then
+                               btfss    v__bitbucket, 4,v__banked ; debug_flag
+                               goto     l__l816
+;  270         freq = debug_freq
+                               movf     v_debug_freq,w,v__access
+                               movwf    v_freq,v__access
+                               movf     v_debug_freq+1,w,v__access
+                               movwf    v_freq+1,v__access
+                               movf     v_debug_freq+2,w,v__access
+                               movwf    v_freq+2,v__access
+                               movf     v_debug_freq+3,w,v__access
+                               movwf    v_freq+3,v__access
+;  271     end if
+l__l816
+;  273     pwm_set_frequency(freq)
+                               movf     v_freq,w,v__access
+                               movwf    v___freq_2,v__banked
+                               movf     v_freq+1,w,v__access
+                               movwf    v___freq_2+1,v__banked
+                               movf     v_freq+2,w,v__access
+                               movwf    v___freq_2+2,v__banked
+                               movf     v_freq+3,w,v__access
+                               movwf    v___freq_2+3,v__banked
+                               call     l_pwm_set_frequency
+;  274     pwm1_set_dutycycle_percent(duty)
+                               movf     v_duty,w,v__access
+                               call     l_pwm1_set_dutycycle_percent
+;  275     pwm1_on()
+                               call     l_pwm1_on
+;  277     set_pwm_config()
+                               movlw    240
+                               andwf    v_ccp1con,w,v__access
+                               iorlw    12
+                               movwf    v_ccp1con,v__access
+                               movlw    63
+                               andwf    v_ccp1con,w,v__access
+                               iorlw    128
+                               movwf    v_ccp1con,v__access
+                               movlw    128
+                               andwf    v_eccp1del,w,v__access
+                               iorlw    50
+                               movwf    v_eccp1del,v__access
+                               bsf      v_intcon, 4,v__access ; intcon_int0ie
+                               bcf      v_intcon3, 3,v__access ; intcon3_int1ie
+                               bcf      v_intcon, 1,v__access ; intcon_int0if
+                               bcf      v_intcon3, 0,v__access ; intcon3_int1if
+                               bsf      v_t1con, 0,v__access ; t1con_tmr1on
+                               return   
+l_turn_off
+                               call     l_pwm1_off
+                               bcf      v_latc, 2,v__access ; x123
+                               bcf      v_latd, 5,v__access ; x124
+                               bcf      v_intcon, 4,v__access ; intcon_int0ie
+                               bcf      v_intcon3, 3,v__access ; intcon3_int1ie
+                               bcf      v_t1con, 0,v__access ; t1con_tmr1on
+                               return   
+l_getphi
+                               movf     v___freq_4,w,v__banked
+                               movwf    v__pic_divisor,v__access
+                               movf     v___freq_4+1,w,v__banked
+                               movwf    v__pic_divisor+1,v__access
+                               clrf     v__pic_divisor+2,v__access
+                               clrf     v__pic_divisor+3,v__access
+                               clrf     v__pic_dividend,v__access
+                               movlw    202
+                               movwf    v__pic_dividend+1,v__access
+                               movlw    154
+                               movwf    v__pic_dividend+2,v__access
+                               movlw    59
+                               movwf    v__pic_dividend+3,v__access
+                               call     l__pic_divide
+                               movf     v__pic_quotient,w,v__access
+                               movlb    0
+                               movwf    v____temp_90,v__banked
+                               movf     v__pic_quotient+1,w,v__access
+                               movwf    v____temp_90+1,v__banked
+                               movf     v__pic_quotient+2,w,v__access
+                               movwf    v____temp_90+2,v__banked
+                               movf     v__pic_quotient+3,w,v__access
+                               movwf    v____temp_90+3,v__banked
+                               movf     v____temp_90,w,v__banked
+                               movwf    v_t,v__banked
+                               movf     v____temp_90+1,w,v__banked
+                               movwf    v_t+1,v__banked
+                               movf     v____temp_90+2,w,v__banked
+                               movwf    v_t+2,v__banked
+                               movf     v____temp_90+3,w,v__banked
+                               movwf    v_t+3,v__banked
+                               clrf     v_result,v__banked
+                               clrf     v_result+1,v__banked
+                               movlw    104
+                               mulwf    v___shift_2,v__banked
+                               movf     v_prod,w,v__access
+                               movwf    v____temp_90,v__banked
+                               movf     v_prod+1,w,v__access
+                               movwf    v____temp_90+1,v__banked
+                               movlw    104
+                               mulwf    v___shift_2+1,v__banked
+                               movf     v_prod,w,v__access
+                               addwf    v____temp_90+1,f,v__banked
+                               movlw    1
+                               mulwf    v___shift_2,v__banked
+                               movf     v_prod,w,v__access
+                               addwf    v____temp_90+1,f,v__banked
+                               movf     v_t,w,v__banked
+                               movwf    v__pic_divisor,v__access
+                               movf     v_t+1,w,v__banked
+                               movwf    v__pic_divisor+1,v__access
+                               movf     v_t+2,w,v__banked
+                               movwf    v__pic_divisor+2,v__access
+                               movf     v_t+3,w,v__banked
+                               movwf    v__pic_divisor+3,v__access
+                               movf     v____temp_90,w,v__banked
+                               movwf    v__pic_dividend,v__access
+                               movf     v____temp_90+1,w,v__banked
+                               movwf    v__pic_dividend+1,v__access
+                               clrf     v__pic_dividend+2,v__access
+                               clrf     v__pic_dividend+3,v__access
+                               call     l__pic_divide
+                               movf     v__pic_quotient,w,v__access
+                               movlb    0
+                               movwf    v_result,v__banked
+                               movf     v__pic_quotient+1,w,v__access
+                               movwf    v_result+1,v__banked
+                               movf     v_result,w,v__banked
+                               movwf    v__pic_temp,v__access
+                               movf     v_result+1,w,v__banked
+                               movwf    v__pic_temp+1,v__access
+                               return   
 l_timer_count_down
-;  306     if timer_en == true then
                                btfss    v__bitbucket, 3,v__banked ; timer_en
-                               goto     l__l825
-;  307         if ((timer_h == 0) & (timer_m == 0) & (timer_s == 0)) then
+                               goto     l__l835
                                movf     v_timer_h,w,v__access
-                               bsf      v____bitbucket_11, 1,v__banked ; _btemp79
+                               bsf      v____bitbucket_11, 1,v__banked ; _btemp84
                                btfss    v__status, v__z,v__access
-                               bcf      v____bitbucket_11, 1,v__banked ; _btemp79
+                               bcf      v____bitbucket_11, 1,v__banked ; _btemp84
                                movf     v_timer_m,w,v__access
-                               bsf      v____bitbucket_11, 2,v__banked ; _btemp80
+                               bsf      v____bitbucket_11, 2,v__banked ; _btemp85
                                btfss    v__status, v__z,v__access
-                               bcf      v____bitbucket_11, 2,v__banked ; _btemp80
-                               bsf      v____bitbucket_11, 3,v__banked ; _btemp81
-                               btfsc    v____bitbucket_11, 1,v__banked ; _btemp79
-                               btfss    v____bitbucket_11, 2,v__banked ; _btemp80
-                               bcf      v____bitbucket_11, 3,v__banked ; _btemp81
+                               bcf      v____bitbucket_11, 2,v__banked ; _btemp85
+                               bsf      v____bitbucket_11, 3,v__banked ; _btemp86
+                               btfsc    v____bitbucket_11, 1,v__banked ; _btemp84
+                               btfss    v____bitbucket_11, 2,v__banked ; _btemp85
+                               bcf      v____bitbucket_11, 3,v__banked ; _btemp86
                                movf     v_timer_s,w,v__access
-                               bsf      v____bitbucket_11, 4,v__banked ; _btemp82
+                               bsf      v____bitbucket_11, 4,v__banked ; _btemp87
                                btfss    v__status, v__z,v__access
-                               bcf      v____bitbucket_11, 4,v__banked ; _btemp82
-                               bsf      v____bitbucket_11, 5,v__banked ; _btemp83
-                               btfsc    v____bitbucket_11, 3,v__banked ; _btemp81
-                               btfss    v____bitbucket_11, 4,v__banked ; _btemp82
-                               bcf      v____bitbucket_11, 5,v__banked ; _btemp83
-                               btfss    v____bitbucket_11, 5,v__banked ; _btemp83
-                               goto     l__l827
-;  308             timer_en = off
+                               bcf      v____bitbucket_11, 4,v__banked ; _btemp87
+                               bsf      v____bitbucket_11, 5,v__banked ; _btemp88
+                               btfsc    v____bitbucket_11, 3,v__banked ; _btemp86
+                               btfss    v____bitbucket_11, 4,v__banked ; _btemp87
+                               bcf      v____bitbucket_11, 5,v__banked ; _btemp88
+                               btfss    v____bitbucket_11, 5,v__banked ; _btemp88
+                               goto     l__l837
                                bcf      v__bitbucket, 3,v__banked ; timer_en
-;  309             power_on = off
                                bcf      v__bitbucket, 0,v__banked ; power_on
-;  310             turn_off()
                                call     l_turn_off
-;  312         end if
-l__l827
-;  315         if timer_s > 0 then
+l__l837
                                movf     v_timer_s,w,v__access
                                btfsc    v__status, v__z,v__access
-                               goto     l__l829
-;  316             timer_s = timer_s - 1
-                               decf     v_timer_s,f,v__access
-;  317         else
-                               return   
-l__l829
-;  318             timer_s = 59
-                               movlw    59
-                               movwf    v_timer_s,v__access
-;  319             if timer_m > 0 then
-                               movf     v_timer_m,w,v__access
-                               btfsc    v__status, v__z,v__access
-                               goto     l__l831
-;  320                 timer_m = timer_m -1
-                               decf     v_timer_m,f,v__access
-;  321             else
-                               return   
-l__l831
-;  322                 timer_m = 59
-                               movlw    59
-                               movwf    v_timer_m,v__access
-;  323                 if timer_h > 0 then
-                               movf     v_timer_h,w,v__access
-                               btfss    v__status, v__z,v__access
-;  324                     timer_h = timer_h - 1
-                               decf     v_timer_h,f,v__access
-;  325                 end if
-l__l833
-;  326             end if
-l__l830
-;  327         end if
-;  329     end if
-l__l825
-l__l824
-;  330 end procedure
-                               return   
-;  333 procedure set_timer() is
-l_set_timer
-;  335     INTCON_TMR0IE = 1
-                               bsf      v_intcon, 5,v__access ; intcon_tmr0ie
-;  336     INTCON_TMR0IF = 0 -- Clear interrupt flag
-                               bcf      v_intcon, 2,v__access ; intcon_tmr0if
-;  338     T0CON_TMR0ON = on -- enable timer0
-                               bsf      v_t0con, 7,v__access ; t0con_tmr0on
-;  341     timer_h = timer_hs
-                               movf     v_timer_hs,w,v__access
-                               movwf    v_timer_h,v__access
-;  342     timer_m = timer_ms
-                               movf     v_timer_ms,w,v__access
-                               movwf    v_timer_m,v__access
-;  343     timer_s = timer_ss
-                               movf     v_timer_ss,w,v__access
-                               movwf    v_timer_s,v__access
-;  345 end procedure
-                               return   
-;  348 procedure timerMgr is
-l_timermgr
-;  349     if timer_en then
-                               movlb    0
-                               btfss    v__bitbucket, 3,v__banked ; timer_en
                                goto     l__l839
-;  352         if count_flag then
-                               btfss    v__bitbucket, 1,v__banked ; count_flag
-                               goto     l__l838
-;  353             timer_count_down()
-                               call     l_timer_count_down
-;  354             count_flag = 0
-                               movlb    0
-                               bcf      v__bitbucket, 1,v__banked ; count_flag
-;  355             update = 1
-                               bsf      v__bitbucket, 2,v__banked ; update
-;  356         end if
-;  357     else
+                               decf     v_timer_s,f,v__access
                                return   
 l__l839
-;  359         T0CON_TMR0ON = off
-                               bcf      v_t0con, 7,v__access ; t0con_tmr0on
-;  362         INTCON_TMR0IE = 0
-                               bcf      v_intcon, 5,v__access ; intcon_tmr0ie
-;  365         timer_h = 0
-                               clrf     v_timer_h,v__access
-;  366         timer_m = 0
-                               clrf     v_timer_m,v__access
-;  367         timer_s = 0
-                               clrf     v_timer_s,v__access
-;  369     end if
-l__l838
-;  370 end procedure
+                               movlw    59
+                               movwf    v_timer_s,v__access
+                               movf     v_timer_m,w,v__access
+                               btfsc    v__status, v__z,v__access
+                               goto     l__l841
+                               decf     v_timer_m,f,v__access
                                return   
-;  373 procedure menu_home is
+l__l841
+                               movlw    59
+                               movwf    v_timer_m,v__access
+                               movf     v_timer_h,w,v__access
+                               btfss    v__status, v__z,v__access
+                               decf     v_timer_h,f,v__access
+l__l843
+l__l840
+l__l835
+l__l834
+                               return   
+l_set_timer
+                               bsf      v_intcon, 5,v__access ; intcon_tmr0ie
+                               bcf      v_intcon, 2,v__access ; intcon_tmr0if
+                               bsf      v_t0con, 7,v__access ; t0con_tmr0on
+                               movf     v_timer_hs,w,v__access
+                               movwf    v_timer_h,v__access
+                               movf     v_timer_ms,w,v__access
+                               movwf    v_timer_m,v__access
+                               movf     v_timer_ss,w,v__access
+                               movwf    v_timer_s,v__access
+                               return   
+l_timermgr
+                               movlb    0
+                               btfss    v__bitbucket, 3,v__banked ; timer_en
+                               goto     l__l849
+                               btfss    v__bitbucket, 1,v__banked ; count_flag
+                               goto     l__l848
+                               call     l_timer_count_down
+                               movlb    0
+                               bcf      v__bitbucket, 1,v__banked ; count_flag
+                               bsf      v__bitbucket, 2,v__banked ; update
+                               return   
+l__l849
+                               bcf      v_t0con, 7,v__access ; t0con_tmr0on
+                               bcf      v_intcon, 5,v__access ; intcon_tmr0ie
+                               clrf     v_timer_h,v__access
+                               clrf     v_timer_m,v__access
+                               clrf     v_timer_s,v__access
+l__l848
+                               return   
 l_menu_home
-;  374     lcd_clear_screen()
                                call     l_lcd_clear_screen
-;  375     lcd_cursor_position(0,0)
                                movlb    0
                                clrf     v___pos_1,v__banked
                                movlw    0
                                call     l_lcd_cursor_position
-;  377     if power_on == true then
                                movlb    0
                                btfss    v__bitbucket, 0,v__banked ; power_on
-                               goto     l__l845
-;  378         line1 = " APAGAR  TIMER  POT "
+                               goto     l__l855
                                movlw    32
                                movwf    v_line1,v__banked
                                movlw    65
@@ -2154,7 +2205,6 @@ l_menu_home
                                movwf    v_line1+18,v__banked
                                movlw    32
                                movwf    v_line1+19,v__banked
-;  379         print_string(lcd, line1)
                                movlw    l__lcd_put
                                movwf    v____device_put_2,v__banked
                                movlw    HIGH l__lcd_put
@@ -2169,16 +2219,13 @@ l_menu_home
                                clrf     v___str_1+1,v__banked
                                clrf     v___str_1+2,v__banked
                                call     l_print_string
-;  381         lcd_cursor_position(1,0)
                                movlb    0
                                clrf     v___pos_1,v__banked
                                movlw    1
                                call     l_lcd_cursor_position
-;  383         if (timer_en) then
                                movlb    0
                                btfss    v__bitbucket, 3,v__banked ; timer_en
-                               goto     l__l847
-;  384             print_string(lcd, " Tiempo: ")
+                               goto     l__l857
                                movlw    l__lcd_put
                                movwf    v____device_put_2,v__banked
                                movlw    HIGH l__lcd_put
@@ -2196,7 +2243,6 @@ l_menu_home
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                call     l_print_string
-;  385             print_byte_dec(lcd, timer_h)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_32,v__banked
@@ -2206,7 +2252,6 @@ l_menu_home
                                movwf    v____device_put_32+2,v__banked
                                movf     v_timer_h,w,v__access
                                call     l_print_byte_dec
-;  386             print_string(lcd, ":")
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -2225,7 +2270,6 @@ l_menu_home
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                call     l_print_string
-;  387             print_byte_dec(lcd, timer_m)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_32,v__banked
@@ -2235,7 +2279,6 @@ l_menu_home
                                movwf    v____device_put_32+2,v__banked
                                movf     v_timer_m,w,v__access
                                call     l_print_byte_dec
-;  388             print_string(lcd, ":")
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -2254,7 +2297,6 @@ l_menu_home
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                call     l_print_string
-;  389             print_byte_dec(lcd, timer_s)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_32,v__banked
@@ -2264,9 +2306,7 @@ l_menu_home
                                movwf    v____device_put_32+2,v__banked
                                movf     v_timer_s,w,v__access
                                goto     l_print_byte_dec
-;  390         else
-l__l847
-;  391             print_string(lcd, " Tiempo: off")
+l__l857
                                movlw    l__lcd_put
                                movwf    v____device_put_2,v__banked
                                movlw    HIGH l__lcd_put
@@ -2284,10 +2324,7 @@ l__l847
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                goto     l_print_string
-;  392         end if
-;  393     else
-l__l845
-;  394         line1 = " ACTIVAR   POTENCIA "
+l__l855
                                movlw    32
                                movwf    v_line1,v__banked
                                movlw    65
@@ -2326,7 +2363,6 @@ l__l845
                                movwf    v_line1+18,v__banked
                                movlw    32
                                movwf    v_line1+19,v__banked
-;  395         line2 = "       TIMER        "
                                movlw    32
                                movwf    v_line2,v__banked
                                movwf    v_line2+1,v__banked
@@ -2354,7 +2390,6 @@ l__l845
                                movwf    v_line2+17,v__banked
                                movwf    v_line2+18,v__banked
                                movwf    v_line2+19,v__banked
-;  397         print_string(lcd, line1)
                                movlw    l__lcd_put
                                movwf    v____device_put_2,v__banked
                                movlw    HIGH l__lcd_put
@@ -2369,12 +2404,10 @@ l__l845
                                clrf     v___str_1+1,v__banked
                                clrf     v___str_1+2,v__banked
                                call     l_print_string
-;  398         lcd_cursor_position(1,0)
                                movlb    0
                                clrf     v___pos_1,v__banked
                                movlw    1
                                call     l_lcd_cursor_position
-;  399         print_string(lcd, line2)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -2390,12 +2423,8 @@ l__l845
                                clrf     v___str_1+1,v__banked
                                clrf     v___str_1+2,v__banked
                                goto     l_print_string
-;  400     end if
-l__l844
-;  402 end procedure
-;  405 procedure debug_msg is
+l__l854
 l_debug_msg
-;  406     line1 = "Entrar en modo debug"
                                movlw    69
                                movwf    v_line1,v__banked
                                movlw    110
@@ -2436,7 +2465,6 @@ l_debug_msg
                                movwf    v_line1+18,v__banked
                                movlw    103
                                movwf    v_line1+19,v__banked
-;  407     line2 = "       SI      NO   "
                                movlw    32
                                movwf    v_line2,v__banked
                                movwf    v_line2+1,v__banked
@@ -2464,14 +2492,11 @@ l_debug_msg
                                movwf    v_line2+17,v__banked
                                movwf    v_line2+18,v__banked
                                movwf    v_line2+19,v__banked
-;  408     lcd_clear_screen()
                                call     l_lcd_clear_screen
-;  409     lcd_cursor_position(0,0)
                                movlb    0
                                clrf     v___pos_1,v__banked
                                movlw    0
                                call     l_lcd_cursor_position
-;  410     print_string(lcd, line1)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -2487,12 +2512,10 @@ l_debug_msg
                                clrf     v___str_1+1,v__banked
                                clrf     v___str_1+2,v__banked
                                call     l_print_string
-;  411     lcd_cursor_position(1,0)
                                movlb    0
                                clrf     v___pos_1,v__banked
                                movlw    1
                                call     l_lcd_cursor_position
-;  412     print_string(lcd, line2)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -2508,38 +2531,29 @@ l_debug_msg
                                clrf     v___str_1+1,v__banked
                                clrf     v___str_1+2,v__banked
                                goto     l_print_string
-;  413 end procedure
-;  415 procedure menu_debug is
 l_menu_debug
-;  423     lcd_clear_screen()
                                call     l_lcd_clear_screen
-;  424     lcd_cursor_position(0,0)
                                movlb    0
                                clrf     v___pos_1,v__banked
                                movlw    0
                                call     l_lcd_cursor_position
-;  426     if (debug_index < 4) then
                                movlw    4
                                movlb    0
                                subwf    v_debug_index,w,v__banked
                                btfsc    v__status, v__z,v__access
-                               goto     l__l853
+                               goto     l__l863
                                btfsc    v__status, v__c,v__access
-                               goto     l__l853
-;  429         for 4 using n loop
+                               goto     l__l863
                                clrf     v___n_8,v__banked
-l__l854
-;  430             lcd_cursor_position(n,0)
+l__l864
                                clrf     v___pos_1,v__banked
                                movf     v___n_8,w,v__banked
                                call     l_lcd_cursor_position
-;  431             if (n == debug_index) then
                                movlb    0
                                movf     v___n_8,w,v__banked
                                subwf    v_debug_index,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l858
-;  432                 print_string(lcd, "->")
+                               goto     l__l868
                                movlw    l__lcd_put
                                movwf    v____device_put_2,v__banked
                                movlw    HIGH l__lcd_put
@@ -2557,10 +2571,8 @@ l__l854
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                call     l_print_string
-;  433             else
-                               goto     l__l857
-l__l858
-;  434                 print_string(lcd, "  ")
+                               goto     l__l867
+l__l868
                                movlw    l__lcd_put
                                movwf    v____device_put_2,v__banked
                                movlw    HIGH l__lcd_put
@@ -2578,21 +2590,17 @@ l__l858
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                call     l_print_string
-;  435             end if
-l__l857
-;  436         end loop
+l__l867
                                movlb    0
                                incf     v___n_8,f,v__banked
                                movlw    4
                                subwf    v___n_8,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l854
-;  438         lcd_cursor_position(0,2)
+                               goto     l__l864
                                movlw    2
                                movwf    v___pos_1,v__banked
                                movlw    0
                                call     l_lcd_cursor_position
-;  439         print_string(lcd, str0)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -2611,7 +2619,6 @@ l__l857
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                call     l_print_string
-;  440         print_dword_dec(lcd, debug_freq)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_28,v__banked
@@ -2628,7 +2635,6 @@ l__l857
                                movf     v_debug_freq+3,w,v__access
                                movwf    v___data_51+3,v__banked
                                call     l_print_dword_dec
-;  441         print_string(lcd, "Hz")
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -2647,13 +2653,11 @@ l__l857
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                call     l_print_string
-;  443         lcd_cursor_position(1,2)
                                movlw    2
                                movlb    0
                                movwf    v___pos_1,v__banked
                                movlw    1
                                call     l_lcd_cursor_position
-;  444         print_string(lcd, str1)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -2672,7 +2676,18 @@ l__l857
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                call     l_print_string
-;  446         print_byte_dec(lcd, debug_index)
+                               movf     v_shift,w,v__access
+                               movlb    0
+                               movwf    v___shift_2,v__banked
+                               movf     v_shift+1,w,v__access
+                               movwf    v___shift_2+1,v__banked
+                               movf     v_freq,w,v__access
+                               movwf    v___freq_4,v__banked
+                               movf     v_freq+1,w,v__access
+                               movwf    v___freq_4+1,v__banked
+                               call     l_getphi
+                               movf     v__pic_temp,w,v__access
+                               movwf    v_phi,v__access
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_32,v__banked
@@ -2680,9 +2695,8 @@ l__l857
                                movwf    v____device_put_32+1,v__banked
                                movlw    UPPER l__lcd_put
                                movwf    v____device_put_32+2,v__banked
-                               movf     v_debug_index,w,v__banked
+                               movf     v_phi,w,v__access
                                call     l_print_byte_dec
-;  448         print_string(lcd, " Psh: ")
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -2701,7 +2715,6 @@ l__l857
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                call     l_print_string
-;  449         print_dword_dec(lcd, shift)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_28,v__banked
@@ -2716,13 +2729,11 @@ l__l857
                                clrf     v___data_51+2,v__banked
                                clrf     v___data_51+3,v__banked
                                call     l_print_dword_dec
-;  451         lcd_cursor_position(2,2)
                                movlw    2
                                movlb    0
                                movwf    v___pos_1,v__banked
                                movlw    2
                                call     l_lcd_cursor_position
-;  452         print_string(lcd, str2)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -2741,7 +2752,6 @@ l__l857
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                call     l_print_string
-;  453         print_dword_dec(lcd, duty)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_28,v__banked
@@ -2755,7 +2765,6 @@ l__l857
                                clrf     v___data_51+2,v__banked
                                clrf     v___data_51+3,v__banked
                                call     l_print_dword_dec
-;  454         print_string(lcd, "%")
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -2774,13 +2783,11 @@ l__l857
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                call     l_print_string
-;  456         lcd_cursor_position(3,2)
                                movlw    2
                                movlb    0
                                movwf    v___pos_1,v__banked
                                movlw    3
                                call     l_lcd_cursor_position
-;  457         print_string(lcd, str3)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -2799,7 +2806,6 @@ l__l857
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                call     l_print_string
-;  458         print_byte_dec(lcd, power_on)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_32,v__banked
@@ -2810,16 +2816,12 @@ l__l857
                                movf     v__bitbucket,w,v__banked
                                andlw    1
                                goto     l_print_byte_dec
-;  459     else
-l__l853
-;  460         lcd_clear_screen()
+l__l863
                                call     l_lcd_clear_screen
-;  461         lcd_cursor_position(0,0)
                                movlb    0
                                clrf     v___pos_1,v__banked
                                movlw    0
                                call     l_lcd_cursor_position
-;  462         print_string(lcd, "->")
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -2838,7 +2840,6 @@ l__l853
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                call     l_print_string
-;  463         print_string(lcd, str4)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -2857,12 +2858,8 @@ l__l853
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                goto     l_print_string
-;  464     end if
-l__l852
-;  467 end procedure
-;  470 procedure menu_timer is
+l__l862
 l_menu_timer
-;  471     line1 = " TIMER              "
                                movlw    32
                                movwf    v_line1,v__banked
                                movlw    84
@@ -2890,14 +2887,11 @@ l_menu_timer
                                movwf    v_line1+17,v__banked
                                movwf    v_line1+18,v__banked
                                movwf    v_line1+19,v__banked
-;  474     lcd_clear_screen()
                                call     l_lcd_clear_screen
-;  475     lcd_cursor_position(0,0)
                                movlb    0
                                clrf     v___pos_1,v__banked
                                movlw    0
                                call     l_lcd_cursor_position
-;  476     print_string(lcd, line1)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -2913,12 +2907,10 @@ l_menu_timer
                                clrf     v___str_1+1,v__banked
                                clrf     v___str_1+2,v__banked
                                call     l_print_string
-;  478     lcd_cursor_position(1,0)
                                movlb    0
                                clrf     v___pos_1,v__banked
                                movlw    1
                                call     l_lcd_cursor_position
-;  479     print_byte_dec(lcd, timer_hs)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_32,v__banked
@@ -2928,11 +2920,9 @@ l_menu_timer
                                movwf    v____device_put_32+2,v__banked
                                movf     v_timer_hs,w,v__access
                                call     l_print_byte_dec
-;  480     lcd = ":"
                                movlw    58
                                movwf    v__pic_temp,v__access
                                call     l__lcd_put
-;  481     print_byte_dec(lcd, timer_ms)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_32,v__banked
@@ -2942,11 +2932,9 @@ l_menu_timer
                                movwf    v____device_put_32+2,v__banked
                                movf     v_timer_ms,w,v__access
                                call     l_print_byte_dec
-;  482     lcd = ":"
                                movlw    58
                                movwf    v__pic_temp,v__access
                                call     l__lcd_put
-;  483     print_byte_dec(lcd, timer_ss)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_32,v__banked
@@ -2956,10 +2944,7 @@ l_menu_timer
                                movwf    v____device_put_32+2,v__banked
                                movf     v_timer_ss,w,v__access
                                goto     l_print_byte_dec
-;  486 end procedure
-;  488 procedure menu_msg is
 l_menu_msg
-;  489     line1 = "   Activar Timer?   "
                                movlw    32
                                movwf    v_line1,v__banked
                                movwf    v_line1+1,v__banked
@@ -2996,7 +2981,6 @@ l_menu_msg
                                movwf    v_line1+17,v__banked
                                movwf    v_line1+18,v__banked
                                movwf    v_line1+19,v__banked
-;  490     line2 = "       SI      NO   "
                                movlw    32
                                movwf    v_line2,v__banked
                                movwf    v_line2+1,v__banked
@@ -3024,14 +3008,11 @@ l_menu_msg
                                movwf    v_line2+17,v__banked
                                movwf    v_line2+18,v__banked
                                movwf    v_line2+19,v__banked
-;  492     lcd_clear_screen()
                                call     l_lcd_clear_screen
-;  493     lcd_cursor_position(0,0)
                                movlb    0
                                clrf     v___pos_1,v__banked
                                movlw    0
                                call     l_lcd_cursor_position
-;  494     print_string(lcd, line1)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -3047,12 +3028,10 @@ l_menu_msg
                                clrf     v___str_1+1,v__banked
                                clrf     v___str_1+2,v__banked
                                call     l_print_string
-;  495     lcd_cursor_position(1,0)
                                movlb    0
                                clrf     v___pos_1,v__banked
                                movlw    1
                                call     l_lcd_cursor_position
-;  496     print_string(lcd, line2)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -3068,17 +3047,12 @@ l_menu_msg
                                clrf     v___str_1+1,v__banked
                                clrf     v___str_1+2,v__banked
                                goto     l_print_string
-;  498 end procedure
-;  501 procedure menu_power is
 l_menu_power
-;  502     lcd_clear_screen()
                                call     l_lcd_clear_screen
-;  503     lcd_cursor_position(0,0)
                                movlb    0
                                clrf     v___pos_1,v__banked
                                movlw    0
                                call     l_lcd_cursor_position
-;  504     print_string(lcd, "Power: ")
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -3097,7 +3071,6 @@ l_menu_power
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                call     l_print_string
-;  505     print_byte_dec(lcd, duty)
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_32,v__banked
@@ -3107,7 +3080,6 @@ l_menu_power
                                movwf    v____device_put_32+2,v__banked
                                movf     v_duty,w,v__access
                                call     l_print_byte_dec
-;  506     print_string(lcd, "%")
                                movlw    l__lcd_put
                                movlb    0
                                movwf    v____device_put_2,v__banked
@@ -3126,536 +3098,532 @@ l_menu_power
                                iorlw    64
                                movwf    v___str_1+2,v__banked
                                goto     l_print_string
-;  508 end procedure
-;  770 end procedure
-l__l865
-;  773 forever loop
-l__l976
-;  774     menu_fsm()
+l__l875
+l__l986
                                movf     v_index,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l988
+                               goto     l__l998
                                movlb    0
                                btfss    v__bitbucket, 2,v__banked ; update
-                               goto     l__l978
+                               goto     l__l988
                                call     l_menu_home
                                movlb    0
                                bcf      v__bitbucket, 2,v__banked ; update
-l__l978
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+l__l988
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 3,v__access ; pin_b3
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b2_st,w,v__access
                                movwf    v___state_10,v__banked
                                movf     v_b2_st+1,w,v__access
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b2_st,v__access
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b2_st+1,v__access
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l980
+                               goto     l__l990
                                movlw    1
                                movwf    v_index,v__access
                                bsf      v__bitbucket, 2,v__banked ; update
-l__l980
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+l__l990
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 4,v__access ; pin_b4
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b3_st,w,v__banked
                                movwf    v___state_10,v__banked
                                movf     v_b3_st+1,w,v__banked
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b3_st,v__banked
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b3_st+1,v__banked
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l982
+                               goto     l__l992
                                movlw    2
                                movwf    v_index,v__access
                                bsf      v__bitbucket, 2,v__banked ; update
-l__l982
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+l__l992
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 2,v__access ; pin_b2
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b1_st,w,v__access
                                movwf    v___state_10,v__banked
                                movf     v_b1_st+1,w,v__access
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b1_st,v__access
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b1_st+1,v__access
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1086
+                               goto     l__l1096
                                btfss    v__bitbucket, 0,v__banked ; power_on
-                               goto     l__l1275
+                               goto     l__l1285
                                bcf      v__bitbucket, 0,v__banked ; power_on
-                               goto     l__l1274
-l__l1275
+                               goto     l__l1284
+l__l1285
                                bsf      v__bitbucket, 0,v__banked ; power_on
-l__l1274
+l__l1284
                                bsf      v__bitbucket, 2,v__banked ; update
                                btfss    v__bitbucket, 0,v__banked ; power_on
-                               goto     l__l984
+                               goto     l__l994
                                call     l_turn_on
-                               goto     l__l1086
-l__l984
+                               goto     l__l1096
+l__l994
                                call     l_turn_off
-                               goto     l__l1086
-l__l988
+                               goto     l__l1096
+l__l998
                                decf     v_index,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1009
+                               goto     l__l1019
                                movlb    0
                                btfss    v__bitbucket, 2,v__banked ; update
-                               goto     l__l989
+                               goto     l__l999
                                call     l_menu_timer
                                movlb    0
                                bcf      v__bitbucket, 2,v__banked ; update
-l__l989
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+l__l999
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 2,v__access ; pin_b2
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b1_st,w,v__access
                                movwf    v___state_10,v__banked
                                movf     v_b1_st+1,w,v__access
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b1_st,v__access
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b1_st+1,v__access
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l991
+                               goto     l__l1001
                                movlw    3
                                movwf    v_index,v__access
                                bsf      v__bitbucket, 2,v__banked ; update
-                               goto     l__l1086
-l__l991
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+                               goto     l__l1096
+l__l1001
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 3,v__access ; pin_b3
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b2_st,w,v__access
                                movwf    v___state_10,v__banked
                                movf     v_b2_st+1,w,v__access
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b2_st,v__access
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b2_st+1,v__access
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1000
+                               goto     l__l1010
                                incf     v_timer_ss,f,v__access
                                movlw    59
                                subwf    v_timer_ss,w,v__access
                                btfsc    v__status, v__z,v__access
-                               goto     l__l996
+                               goto     l__l1006
                                btfss    v__status, v__c,v__access
-                               goto     l__l996
+                               goto     l__l1006
                                clrf     v_timer_ss,v__access
                                incf     v_timer_ms,f,v__access
                                movlw    59
                                subwf    v_timer_ms,w,v__access
                                btfsc    v__status, v__z,v__access
-                               goto     l__l999
+                               goto     l__l1009
                                btfss    v__status, v__c,v__access
-                               goto     l__l999
+                               goto     l__l1009
                                clrf     v_timer_ms,v__access
                                incf     v_timer_hs,f,v__access
                                movlw    1
                                subwf    v_timer_hs,w,v__access
                                btfsc    v__status, v__z,v__access
-                               goto     l__l999
+                               goto     l__l1009
                                btfss    v__status, v__c,v__access
-                               goto     l__l999
+                               goto     l__l1009
                                movlw    1
                                movwf    v_timer_hs,v__access
-                               goto     l__l999
-l__l996
+                               goto     l__l1009
+l__l1006
                                movlw    59
                                subwf    v_timer_ms,w,v__access
                                btfsc    v__status, v__z,v__access
-                               goto     l__l997
+                               goto     l__l1007
                                btfss    v__status, v__c,v__access
-                               goto     l__l997
+                               goto     l__l1007
                                clrf     v_timer_ms,v__access
                                incf     v_timer_hs,f,v__access
-                               goto     l__l999
-l__l997
+                               goto     l__l1009
+l__l1007
                                movlw    1
                                subwf    v_timer_hs,w,v__access
                                btfsc    v__status, v__z,v__access
-                               goto     l__l998
+                               goto     l__l1008
                                btfss    v__status, v__c,v__access
-                               goto     l__l998
+                               goto     l__l1008
                                clrf     v_timer_hs,v__access
-l__l998
-l__l999
+l__l1008
+l__l1009
                                bsf      v__bitbucket, 2,v__banked ; update
-                               goto     l__l1086
-l__l1000
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+                               goto     l__l1096
+l__l1010
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 4,v__access ; pin_b4
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b3_st,w,v__banked
                                movwf    v___state_10,v__banked
                                movf     v_b3_st+1,w,v__banked
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b3_st,v__banked
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b3_st+1,v__banked
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1007
+                               goto     l__l1017
                                movf     v_timer_ss,w,v__access
                                btfsc    v__status, v__z,v__access
-                               goto     l__l1001
+                               goto     l__l1011
                                decf     v_timer_ss,f,v__access
-                               goto     l__l1006
-l__l1001
+                               goto     l__l1016
+l__l1011
                                movlw    59
                                movwf    v_timer_ss,v__access
                                movf     v_timer_ms,w,v__access
                                btfsc    v__status, v__z,v__access
-                               goto     l__l1002
+                               goto     l__l1012
                                decf     v_timer_ms,f,v__access
-                               goto     l__l1005
-l__l1002
+                               goto     l__l1015
+l__l1012
                                movlw    59
                                movwf    v_timer_ms,v__access
                                movf     v_timer_hs,w,v__access
                                btfss    v__status, v__z,v__access
                                decf     v_timer_hs,f,v__access
-l__l1003
-l__l1005
-l__l1006
+l__l1013
+l__l1015
+l__l1016
                                bsf      v__bitbucket, 2,v__banked ; update
-l__l1007
-l__l1008
-                               goto     l__l1086
-l__l1009
+l__l1017
+l__l1018
+                               goto     l__l1096
+l__l1019
                                movlw    2
                                subwf    v_index,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1026
+                               goto     l__l1036
                                movlb    0
                                btfss    v__bitbucket, 2,v__banked ; update
-                               goto     l__l1010
+                               goto     l__l1020
                                call     l_menu_power
                                movlb    0
                                bcf      v__bitbucket, 2,v__banked ; update
-l__l1010
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+l__l1020
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 2,v__access ; pin_b2
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b1_st,w,v__access
                                movwf    v___state_10,v__banked
                                movf     v_b1_st+1,w,v__access
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b1_st,v__access
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b1_st+1,v__access
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1012
+                               goto     l__l1022
                                clrf     v_index,v__access
                                bsf      v__bitbucket, 2,v__banked ; update
-                               goto     l__l1023
-l__l1012
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+                               goto     l__l1033
+l__l1022
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 3,v__access ; pin_b3
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b2_st,w,v__access
                                movwf    v___state_10,v__banked
                                movf     v_b2_st+1,w,v__access
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b2_st,v__access
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b2_st+1,v__access
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1017
+                               goto     l__l1027
                                incf     v_duty,f,v__access
                                movlw    100
                                subwf    v_duty,w,v__access
                                btfsc    v__status, v__z,v__access
-                               goto     l__l1013
+                               goto     l__l1023
                                btfss    v__status, v__c,v__access
-                               goto     l__l1013
+                               goto     l__l1023
                                movlw    100
                                movwf    v_duty,v__access
-l__l1013
+l__l1023
                                btfsc    v__bitbucket, 0,v__banked ; power_on
                                call     l_turn_on
-l__l1015
+l__l1025
                                movlb    0
                                bsf      v__bitbucket, 2,v__banked ; update
-                               goto     l__l1023
-l__l1017
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+                               goto     l__l1033
+l__l1027
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 4,v__access ; pin_b4
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b3_st,w,v__banked
                                movwf    v___state_10,v__banked
                                movf     v_b3_st+1,w,v__banked
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b3_st,v__banked
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b3_st+1,v__banked
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1022
+                               goto     l__l1032
                                movf     v_duty,w,v__access
                                btfss    v__status, v__z,v__access
                                decf     v_duty,f,v__access
-l__l1018
+l__l1028
                                btfsc    v__bitbucket, 0,v__banked ; power_on
                                call     l_turn_on
-l__l1020
+l__l1030
                                movlb    0
                                bsf      v__bitbucket, 2,v__banked ; update
-l__l1022
-l__l1023
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+l__l1032
+l__l1033
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 2,v__access ; pin_b2
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b1_st,w,v__access
                                movwf    v___state_10,v__banked
                                movf     v_b1_st+1,w,v__access
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b1_st,v__access
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b1_st+1,v__access
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
-                               bcf      v__bitbucket+4, 2,v__banked ; _btemp1201
+                               subwf    v____temp_94,w,v__banked
+                               bcf      v__bitbucket+4, 2,v__banked ; _btemp1251
                                btfsc    v__status, v__z,v__access
-                               bsf      v__bitbucket+4, 2,v__banked ; _btemp1201
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v__bitbucket+4, 2,v__banked ; _btemp1251
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 3,v__access ; pin_b3
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b2_st,w,v__access
                                movwf    v___state_10,v__banked
                                movf     v_b2_st+1,w,v__access
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91+1,v__banked
+                               movwf    v____temp_94+1,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b2_st,v__access
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b2_st+1,v__access
-                               movf     v____temp_91+1,w,v__banked
-                               bsf      v__bitbucket+4, 3,v__banked ; _btemp1211
+                               movf     v____temp_94+1,w,v__banked
+                               bsf      v__bitbucket+4, 3,v__banked ; _btemp1261
                                btfss    v__status, v__z,v__access
-                               bcf      v__bitbucket+4, 3,v__banked ; _btemp1211
-                               bsf      v__bitbucket+4, 4,v__banked ; _btemp1221
-                               btfsc    v__bitbucket+4, 2,v__banked ; _btemp1201
-                               btfss    v__bitbucket+4, 3,v__banked ; _btemp1211
-                               bcf      v__bitbucket+4, 4,v__banked ; _btemp1221
-                               btfss    v__bitbucket+4, 4,v__banked ; _btemp1221
-                               goto     l__l1086
+                               bcf      v__bitbucket+4, 3,v__banked ; _btemp1261
+                               bsf      v__bitbucket+4, 4,v__banked ; _btemp1271
+                               btfsc    v__bitbucket+4, 2,v__banked ; _btemp1251
+                               btfss    v__bitbucket+4, 3,v__banked ; _btemp1261
+                               bcf      v__bitbucket+4, 4,v__banked ; _btemp1271
+                               btfss    v__bitbucket+4, 4,v__banked ; _btemp1271
+                               goto     l__l1096
                                movlw    4
                                movwf    v_index,v__access
                                bsf      v__bitbucket, 2,v__banked ; update
-                               goto     l__l1086
-l__l1026
+                               goto     l__l1096
+l__l1036
                                movlw    3
                                subwf    v_index,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1033
+                               goto     l__l1043
                                movlb    0
                                btfss    v__bitbucket, 2,v__banked ; update
-                               goto     l__l1027
+                               goto     l__l1037
                                call     l_menu_msg
                                movlb    0
                                bcf      v__bitbucket, 2,v__banked ; update
-l__l1027
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+l__l1037
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 3,v__access ; pin_b3
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b2_st,w,v__access
                                movwf    v___state_10,v__banked
                                movf     v_b2_st+1,w,v__access
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b2_st,v__access
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b2_st+1,v__access
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1029
+                               goto     l__l1039
                                bsf      v__bitbucket, 3,v__banked ; timer_en
                                clrf     v_index,v__access
                                bsf      v__bitbucket, 2,v__banked ; update
                                call     l_set_timer
-l__l1029
+l__l1039
                                movlb    0
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 4,v__access ; pin_b4
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b3_st,w,v__banked
                                movwf    v___state_10,v__banked
                                movf     v_b3_st+1,w,v__banked
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b3_st,v__banked
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b3_st+1,v__banked
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1086
+                               goto     l__l1096
                                bcf      v__bitbucket, 3,v__banked ; timer_en
                                clrf     v_index,v__access
                                bsf      v__bitbucket, 2,v__banked ; update
-                               goto     l__l1086
-l__l1033
+                               goto     l__l1096
+l__l1043
                                movlw    4
                                subwf    v_index,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1040
+                               goto     l__l1050
                                movlb    0
                                btfss    v__bitbucket, 2,v__banked ; update
-                               goto     l__l1034
+                               goto     l__l1044
                                call     l_debug_msg
                                movlb    0
                                bcf      v__bitbucket, 2,v__banked ; update
-l__l1034
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+l__l1044
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 4,v__access ; pin_b4
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b3_st,w,v__banked
                                movwf    v___state_10,v__banked
                                movf     v_b3_st+1,w,v__banked
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b3_st,v__banked
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b3_st+1,v__banked
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1036
+                               goto     l__l1046
                                clrf     v_index,v__access
                                bsf      v__bitbucket, 2,v__banked ; update
-l__l1036
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+l__l1046
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 3,v__access ; pin_b3
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b2_st,w,v__access
                                movwf    v___state_10,v__banked
                                movf     v_b2_st+1,w,v__access
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b2_st,v__access
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b2_st+1,v__access
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1086
+                               goto     l__l1096
                                movlw    5
                                movwf    v_index,v__access
                                bsf      v__bitbucket, 2,v__banked ; update
-                               goto     l__l1086
-l__l1040
+                               goto     l__l1096
+l__l1050
                                movlw    5
                                subwf    v_index,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1085
+                               goto     l__l1095
                                movlb    0
                                btfss    v__bitbucket, 2,v__banked ; update
-                               goto     l__l1041
+                               goto     l__l1051
                                call     l_menu_debug
                                movlb    0
                                bcf      v__bitbucket, 2,v__banked ; update
-l__l1041
+l__l1051
                                bsf      v__bitbucket, 4,v__banked ; debug_flag
                                movf     v_debug_index,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1055
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+                               goto     l__l1065
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 3,v__access ; pin_b3
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b2_st,w,v__access
                                movwf    v___state_10,v__banked
                                movf     v_b2_st+1,w,v__access
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b2_st,v__access
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b2_st+1,v__access
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1047
+                               goto     l__l1057
                                bsf      v__bitbucket, 2,v__banked ; update
                                movlw    100
                                addwf    v_debug_freq,f,v__access
@@ -3668,54 +3636,54 @@ l__l1041
                                movlw    0
                                subwf    v_freq+3,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1290
+                               goto     l__l1300
                                movlw    0
                                subwf    v_freq+2,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1290
+                               goto     l__l1300
                                movlw    195
                                subwf    v_freq+1,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1290
+                               goto     l__l1300
                                movlw    80
                                subwf    v_freq,w,v__access
-l__l1290
+l__l1300
                                btfsc    v__status, v__z,v__access
-                               goto     l__l1291
+                               goto     l__l1301
                                btfss    v__status, v__c,v__access
-                               goto     l__l1043
-l__l1291
+                               goto     l__l1053
+l__l1301
                                movlw    80
                                movwf    v_freq,v__access
                                movlw    195
                                movwf    v_freq+1,v__access
                                clrf     v_freq+2,v__access
                                clrf     v_freq+3,v__access
-l__l1043
+l__l1053
                                btfss    v__bitbucket, 0,v__banked ; power_on
-                               goto     l__l1048
+                               goto     l__l1058
                                call     l_turn_on
-l__l1047
-l__l1048
+l__l1057
+l__l1058
                                movlb    0
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 4,v__access ; pin_b4
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b3_st,w,v__banked
                                movwf    v___state_10,v__banked
                                movf     v_b3_st+1,w,v__banked
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b3_st,v__banked
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b3_st+1,v__banked
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1074
+                               goto     l__l1084
                                bsf      v__bitbucket, 2,v__banked ; update
                                movlw    156
                                addwf    v_debug_freq,f,v__access
@@ -3728,266 +3696,272 @@ l__l1048
                                movlw    0
                                subwf    v_freq+3,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1292
+                               goto     l__l1302
                                movlw    0
                                subwf    v_freq+2,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1292
+                               goto     l__l1302
                                movlw    39
                                subwf    v_freq+1,w,v__access
                                btfss    v__status, v__z,v__access
-                               goto     l__l1292
+                               goto     l__l1302
                                movlw    16
                                subwf    v_freq,w,v__access
-l__l1292
+l__l1302
                                btfsc    v__status, v__z,v__access
-                               goto     l__l1293
+                               goto     l__l1303
                                btfsc    v__status, v__c,v__access
-                               goto     l__l1049
-l__l1293
+                               goto     l__l1059
+l__l1303
                                movlw    16
                                movwf    v_freq,v__access
                                movlw    39
                                movwf    v_freq+1,v__access
                                clrf     v_freq+2,v__access
                                clrf     v_freq+3,v__access
-l__l1049
+l__l1059
                                btfss    v__bitbucket, 0,v__banked ; power_on
-                               goto     l__l1074
+                               goto     l__l1084
                                call     l_turn_on
-                               goto     l__l1074
-l__l1055
+                               goto     l__l1084
+l__l1065
                                movlw    2
                                subwf    v_debug_index,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1068
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+                               goto     l__l1078
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 3,v__access ; pin_b3
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b2_st,w,v__access
                                movwf    v___state_10,v__banked
                                movf     v_b2_st+1,w,v__access
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b2_st,v__access
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b2_st+1,v__access
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1060
+                               goto     l__l1070
                                bsf      v__bitbucket, 2,v__banked ; update
                                incf     v_duty,f,v__access
                                movlw    100
                                subwf    v_duty,w,v__access
                                btfsc    v__status, v__z,v__access
-                               goto     l__l1056
+                               goto     l__l1066
                                btfss    v__status, v__c,v__access
-                               goto     l__l1056
+                               goto     l__l1066
                                movlw    100
                                movwf    v_duty,v__access
-l__l1056
+l__l1066
                                btfss    v__bitbucket, 0,v__banked ; power_on
-                               goto     l__l1061
+                               goto     l__l1071
                                call     l_turn_on
-l__l1060
-l__l1061
+l__l1070
+l__l1071
                                movlb    0
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 4,v__access ; pin_b4
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b3_st,w,v__banked
                                movwf    v___state_10,v__banked
                                movf     v_b3_st+1,w,v__banked
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b3_st,v__banked
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b3_st+1,v__banked
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1074
+                               goto     l__l1084
                                bsf      v__bitbucket, 2,v__banked ; update
                                movf     v_duty,w,v__access
                                btfss    v__status, v__z,v__access
                                decf     v_duty,f,v__access
-l__l1062
+l__l1072
                                btfss    v__bitbucket, 0,v__banked ; power_on
-                               goto     l__l1074
+                               goto     l__l1084
                                call     l_turn_on
-                               goto     l__l1074
-l__l1068
+                               goto     l__l1084
+l__l1078
                                movlw    3
                                subwf    v_debug_index,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1073
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+                               goto     l__l1083
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 3,v__access ; pin_b3
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b2_st,w,v__access
                                movwf    v___state_10,v__banked
                                movf     v_b2_st+1,w,v__access
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b2_st,v__access
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b2_st+1,v__access
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1069
+                               goto     l__l1079
                                call     l_turn_on
                                movlb    0
                                bsf      v__bitbucket, 0,v__banked ; power_on
                                bsf      v__bitbucket, 2,v__banked ; update
-l__l1069
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+l__l1079
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 4,v__access ; pin_b4
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b3_st,w,v__banked
                                movwf    v___state_10,v__banked
                                movf     v_b3_st+1,w,v__banked
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b3_st,v__banked
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b3_st+1,v__banked
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1074
+                               goto     l__l1084
                                bcf      v__bitbucket, 0,v__banked ; power_on
                                call     l_turn_off
                                movlb    0
                                bsf      v__bitbucket, 2,v__banked ; update
-l__l1073
-l__l1074
+l__l1083
+l__l1084
                                movlb    0
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 2,v__access ; pin_b2
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b1_st,w,v__access
                                movwf    v___state_10,v__banked
                                movf     v_b1_st+1,w,v__access
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b1_st,v__access
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b1_st+1,v__access
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1077
+                               goto     l__l1087
                                incf     v_debug_index,f,v__banked
                                bsf      v__bitbucket, 2,v__banked ; update
                                movlw    4
                                subwf    v_debug_index,w,v__banked
                                btfsc    v__status, v__z,v__access
-                               goto     l__l1078
+                               goto     l__l1088
                                btfss    v__status, v__c,v__access
-                               goto     l__l1078
+                               goto     l__l1088
                                clrf     v_debug_index,v__banked
-l__l1077
-l__l1078
+l__l1087
+l__l1088
                                movlw    4
                                subwf    v_debug_index,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1086
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+                               goto     l__l1096
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 3,v__access ; pin_b3
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b2_st,w,v__access
                                movwf    v___state_10,v__banked
                                movf     v_b2_st+1,w,v__access
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b2_st,v__access
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b2_st+1,v__access
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1079
+                               goto     l__l1089
                                clrf     v_index,v__access
                                clrf     v_debug_index,v__banked
                                bcf      v__bitbucket, 4,v__banked ; debug_flag
                                bsf      v__bitbucket, 2,v__banked ; update
-l__l1079
-                               bcf      v____bitbucket_71, 0,v__banked ; polled1
+l__l1089
+                               bcf      v____bitbucket_73, 0,v__banked ; polled1
                                btfsc    v_portb, 4,v__access ; pin_b4
-                               bsf      v____bitbucket_71, 0,v__banked ; polled1
+                               bsf      v____bitbucket_73, 0,v__banked ; polled1
                                movf     v_b3_st,w,v__banked
                                movwf    v___state_10,v__banked
                                movf     v_b3_st+1,w,v__banked
                                movwf    v___state_10+1,v__banked
                                call     l_debounce
                                movlb    0
-                               movwf    v____temp_91,v__banked
+                               movwf    v____temp_94,v__banked
                                movf     v___state_10,w,v__banked
                                movwf    v_b3_st,v__banked
                                movf     v___state_10+1,w,v__banked
                                movwf    v_b3_st+1,v__banked
                                movlw    2
-                               subwf    v____temp_91,w,v__banked
+                               subwf    v____temp_94,w,v__banked
                                btfss    v__status, v__z,v__access
-                               goto     l__l1084
+                               goto     l__l1094
                                clrf     v_index,v__access
                                clrf     v_debug_index,v__banked
                                bcf      v__bitbucket, 4,v__banked ; debug_flag
                                bsf      v__bitbucket, 2,v__banked ; update
-l__l1084
-l__l1085
-l__l1086
+l__l1094
+l__l1095
+l__l1096
                                call     l_timermgr
-                               goto     l__l976
+                               goto     l__l986
 l_isr
                                btfss    v_intcon, 2,v__access ; intcon_tmr0if
-                               goto     l__l1091
+                               goto     l__l1101
                                bsf      v__bitbucket, 1,v__banked ; count_flag
                                movlw    180
                                movwf    v_tmr0,v__access
                                movlw    179
                                movwf    v_tmr0+1,v__access
                                bcf      v_intcon, 2,v__access ; intcon_tmr0if
-l__l1091
+l__l1101
                                btfss    v_intcon, 1,v__access ; intcon_int0if
-                               goto     l__l1093
+                               goto     l__l1103
                                bsf      v_t1con, 0,v__access ; t1con_tmr1on
                                clrf     v_tmr1,v__access
                                clrf     v_tmr1+1,v__access
                                bcf      v_intcon, 4,v__access ; intcon_int0ie
                                bsf      v_intcon3, 3,v__access ; intcon3_int1ie
                                bcf      v_intcon, 1,v__access ; intcon_int0if
-l__l1093
+l__l1103
                                btfss    v_intcon3, 0,v__access ; intcon3_int1if
-                               goto     l__l1095
-                               movf     v_tmr1,w,v__access
+                               goto     l__l1105
+                               movlw    200
+                               mulwf    v_tmr1,v__access
+                               movf     v_prod,w,v__access
                                movwf    v_shift,v__access
-                               movf     v_tmr1+1,w,v__access
+                               movf     v_prod+1,w,v__access
                                movwf    v_shift+1,v__access
+                               movlw    200
+                               mulwf    v_tmr1+1,v__access
+                               movf     v_prod,w,v__access
+                               addwf    v_shift+1,f,v__access
                                bcf      v_intcon3, 3,v__access ; intcon3_int1ie
                                bsf      v_intcon, 4,v__access ; intcon_int0ie
                                bcf      v_intcon3, 0,v__access ; intcon3_int1if
-l__l1095
+l__l1105
                                movf     v__pic_isr_state,w,v__access
                                movwf    v__pic_state,v__access
                                movf     v__pic_isr_state+1,w,v__access

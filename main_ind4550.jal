@@ -144,12 +144,19 @@ var byte timer_ss = 30 -- Set points
 var byte timer_ms = 1
 var byte timer_hs = 0
 
+-- Timer 1 step resolution
+-- Crystal freq is 20MHz so cpu freq is 5MHz
+-- our timer is directly increased by cpu clock so
+-- it will increase every 200ns (1/5MHz)
+const word RESOLUTION = 200 -- 200ns step
+
 -- Update clock after 1 sec interrupt
 var bit count_flag = Off
 
 var bit update = true    -- Update screen!
 var bit timer_en = false -- Enable/Disable count down
 
+-- Buttons configurations
 const byte THRESHOLD = 50  -- Button press threshold
 
 var word b1_st = debounce_init(THRESHOLD) -- Debounce
@@ -162,7 +169,8 @@ var bit debug_flag = OFF
 
 --------------------------------------------------------------------
 
--- PWM -----------------------------------------------------------
+-- PWM -------------------------------------------------------------
+-- PWM module configuration
 include pwm_hardware
 pwm_max_resolution(1)
 
@@ -170,63 +178,7 @@ pwm_set_frequency(25000)
 pwm1_set_dutycycle_percent(50)
 pwm1_off()
 
--- Set output PWM stage configurations to work as
--- Half bridge output
-procedure set_pwm_config() is
-    pragma inline
-    CCP1CON_CCP1M = 0xC
-    CCP1CON_P1M = 2  -- Half bridge operation
-    ECCP1DEL_PDC  = 50 -- Dead time
-end procedure
-
-
--- Turn on PWM module
-procedure turn_on() is
-    if debug_flag then
-        freq = debug_freq
-    end if
-
-    pwm_set_frequency(freq)
-    pwm1_set_dutycycle_percent(duty)
-    pwm1_on()
-
-    set_pwm_config()
-
-    -- TODO: relay switch
-
-    -- Enable external interrups
-    -- At the beginning we only spect zero cross voltage interrupts
-    -- When this interrupt is triggered, count starts until zero cross
-    -- current interrupt
-    INTCON_INT0IE = 1 -- Enable external interrupts INT0, INT1
-    INTCON3_INT1IE = 0
-
-    INTCON_INT0IF = 0 -- Clear interrupts flags
-    INTCON3_INT1IF = 0
-
-    -- Turn On Timer 1
-    T1CON_TMR1ON = 1
-end procedure
-
-procedure turn_off() is
-    pwm1_off()
-    pin_P1A = off -- Make sure all is off
-    pin_P1B = off
-
-    -- TODO: relay switch
-
-    -- Disable external interrups
-    INTCON_INT0IE = 0
-    INTCON3_INT1IE = 0
-
-    -- Turn Off Timer 1
-    T1CON_TMR1ON = 0
-
-end procedure
-
-------------------------------------------------------------------
-
--- Timer0 configuration ------------------------------------------
+-- Timer0 configuration --------------------------------------------
 -- This timer is used in 16 bit operation mode for clock count down
 
 T0CON_T0CS = 0   -- internal clock
@@ -298,6 +250,99 @@ print_string(lcd, line1)
 
 delay_100ms(10)
 lcd_clear_screen()
+
+
+-- Procedures and functions ----------------------------------------
+
+-- Set output PWM stage configurations to work as
+-- Half bridge output
+procedure set_pwm_config() is
+    pragma inline
+    CCP1CON_CCP1M = 0xC
+    CCP1CON_P1M = 2  -- Half bridge operation
+    ECCP1DEL_PDC  = 50 -- Dead time
+end procedure
+
+
+-- Turn on Inverter module -----------------------------------------------
+procedure turn_on() is
+    if debug_flag then
+        freq = debug_freq
+    end if
+
+    pwm_set_frequency(freq)
+    pwm1_set_dutycycle_percent(duty)
+    pwm1_on()
+
+    set_pwm_config()
+
+    -- TODO: relay switch
+
+    -- Enable external interrups
+    -- At the beginning we only spect zero cross voltage interrupts
+    -- When this interrupt is triggered, count starts until zero cross
+    -- current interrupt
+    INTCON_INT0IE = 1 -- Enable external interrupts INT0, INT1
+    INTCON3_INT1IE = 0
+
+    INTCON_INT0IF = 0 -- Clear interrupts flags
+    INTCON3_INT1IF = 0
+
+    -- Turn On Timer 1
+    T1CON_TMR1ON = 1
+end procedure
+
+procedure turn_off() is
+    pwm1_off()
+    pin_P1A = off -- Make sure all is off
+    pin_P1B = off
+
+    -- TODO: relay switch
+
+    -- Disable external interrups
+    INTCON_INT0IE = 0
+    INTCON3_INT1IE = 0
+
+    -- Turn Off Timer 1
+    T1CON_TMR1ON = 0
+
+end procedure
+
+------------------------------------------------------------------
+
+-------------------------------------------------------------------
+-- Freq track algoritm
+-------------------------------------------------------------------
+procedure freqMgr() is
+    if power_on then
+        var dword t2 = 1000_000_000/(2 * freq)
+
+        -- Resonance point or slightly inductive behaivor
+        if (shift < 400) | (shift == t2) then -- 0 - 400ns
+            freq = freq
+
+        -- Inductive Load
+        elsif shift < t2 then
+            freq = freq + 100
+
+        -- Capacitive Load
+        elsif shift > t2 then
+            freq = freq - 100
+        end if
+
+
+    end if
+end procedure
+
+-- Get phase shift in degrees (only for debug ) -----------------------
+function getPhi(word in shift, word in freq) return word is
+    var dword t = dword(1000_000_000/freq)
+    var word result = 0
+
+    result = 360 * shift/t
+    return result
+
+end function
 
 ------------------------------------------------------------------
 -- Implements a count down
@@ -442,8 +487,10 @@ procedure menu_debug is
 
         lcd_cursor_position(1,2)
         print_string(lcd, str1)
-        --~ print_byte_dec(lcd, phi)
-        print_byte_dec(lcd, debug_index)
+
+        phi = getPhi(shift, freq)
+        print_byte_dec(lcd, phi)
+        --print_byte_dec(lcd, debug_index)
 
         print_string(lcd, " Psh: ")
         print_dword_dec(lcd, shift)
@@ -788,7 +835,7 @@ procedure ISR is
         TMR0 = 46004
         INTCON_TMR0IF = off   -- Clear interrupt flag
     end if
-   
+
     -- External interrupts --------------------------
 
     -- INT0 interrupt Voltage zero cross
@@ -808,7 +855,7 @@ procedure ISR is
     -- INT1 interrupt current zero cross
     if INTCON3_INT1IF == true then
         -- Take phase shift
-        shift = TMR1
+        shift = TMR1 * RESOLUTION  -- Calculate time shift in nano seconds
 
         -- Disable INT1 interrupt
         INTCON3_INT1IE = 0
